@@ -8,6 +8,7 @@
       <v-spacer></v-spacer>
       <div class="w_100 input__rel">
         <input
+          v-model="searchInput"
           type="text"
           placeholder="Search product..."
           class="search__input"
@@ -47,7 +48,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Navbar",
+  data() {
+    return {
+      searchInput: ""
+    };
+  },
+  watch: {
+    searchInput(newValue, oldValue) {
+      console.log(newValue);
+    }
+  }
+};
 </script>
 
 <style scoped>

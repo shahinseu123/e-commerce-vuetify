@@ -18,16 +18,16 @@ export default {
         {
           id: 1,
           src:
-            "https://soliloquywp.com/wp-content/uploads/2019/04/nb_esc_cover.jpg"
+            "https://www.chefkunalkapur.com/wp-content/uploads/2021/06/Rasmalai-3-scaled.jpg?v=1625130326"
         },
         {
           id: 2,
-          src: "https://jssors8.azureedge.net/demos/img/gallery/980x380/023.jpg"
+          src: "https://i.ytimg.com/vi/I_hKHcXo1EA/maxresdefault.jpg"
         },
         {
           id: 3,
           src:
-            "https://smartslider3.com/wp-content/uploads/2019/01/imageslider-1-780x410.png"
+            "https://achalafood.com/wp-content/uploads/2018/09/Rasmalai-Recipe-main-photo.jpg"
         }
       ]
     };
