@@ -1,18 +1,20 @@
 <template>
-  <v-card class="mx-1 color_bg" elevation="0">
-    <v-img
-      style="height: 180px"
-      :lazy-src="
-        product.product_image != null
-          ? 'http://localhost:8000/uploads/media/' + product.product_image
-          : 'https://flatsome3.uxthemes.com/wp-content/uploads/woocommerce-placeholder.png'
-      "
-      :src="
-        product.product_image != null
-          ? 'http://localhost:8000/uploads/media/' + product.product_image
-          : 'https://flatsome3.uxthemes.com/wp-content/uploads/woocommerce-placeholder.png'
-      "
-    ></v-img>
+  <v-card class="mx-1 color_bg" max-width="300" elevation="0">
+    <nuxt-link :to="`/product/${product.title}`">
+      <v-img
+        style="height: 180px"
+        :lazy-src="
+          product.product_image != null
+            ? 'http://localhost:8000/uploads/media/' + product.product_image
+            : 'https://flatsome3.uxthemes.com/wp-content/uploads/woocommerce-placeholder.png'
+        "
+        :src="
+          product.product_image != null
+            ? 'http://localhost:8000/uploads/media/' + product.product_image
+            : 'https://flatsome3.uxthemes.com/wp-content/uploads/woocommerce-placeholder.png'
+        "
+      ></v-img>
+    </nuxt-link>
     <v-card-actions>
       <v-btn text color="teal accent-4" @click="reveal = true">
         More
@@ -106,8 +108,8 @@ export default {
 .lignthrough {
   text-decoration: lightpink;
 }
-.btm_fix {
+/* .btm_fix {
   position: fixed;
   bottom: 0;
-}
+} */
 </style>

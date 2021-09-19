@@ -2,19 +2,13 @@
   <div class="cat__slider pa-2 mx-4 my-3 elevation-1">
     <v-sheet class="mx-auto">
       <v-slide-group show-arrows v-if="getBrands.length !== 0" class="h__130">
-        <v-slide-item
-          v-for="n in getBrands"
-          :key="n.id"
-          v-slot="{ active, toggle }"
-        >
+        <v-slide-item v-for="n in getBrands" :key="n.id">
           <BrandItem
             class="mx-2"
-            :input-value="active"
             :brand="n"
             active-class="purple white--text"
             depressed
             rounded
-            @click="toggle"
           >
           </BrandItem>
         </v-slide-item>

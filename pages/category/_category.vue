@@ -25,12 +25,12 @@
           </v-card-text>
         </v-card>
         <v-card class="elevation-0 mt-1">
-          <h3 class="py-3 mb-5 text-center border_tt">Shop by brand</h3>
-          <div v-for="cat in getAllBrand" :key="cat.id" class="px-5">
+          <h3 class="py-3 mb-5 text-center border_tt">Shop by category</h3>
+          <div v-for="cat in getAllBrands" :key="cat.id" class="px-5">
             <v-checkbox
               @change="productByRange"
               class="margin__b_15"
-              v-model="brands"
+              v-model="brand"
               :label="cat.brand_title"
               color="teal"
               :value="cat.brand_title"
@@ -48,20 +48,36 @@
         xl="9"
         class="padding_left_5"
       >
-        <v-card v-if="!findByRange" class="pa-5" elevation="0">
-          <v-row v-if="initLoading.length > 0">
-            <v-col
-              v-for="prod in initLoading"
-              :key="prod.id"
-              cols="6"
-              sm="6"
-              md="4"
-              lg="3"
-              xl="2"
-              style="padding: 0;margin-top:6px"
-            >
-              <lazy-product :product="prod" />
-            </v-col>
+        <v-card v-if="!findByRange" class="pa-7" elevation="0">
+          <v-row v-if="observeredLoad.length > 0 || productByBrand.length > 0">
+            <v-row v-if="observeredLoad.length > 0">
+              <v-col
+                v-for="prod in observeredLoad"
+                :key="prod.id"
+                cols="6"
+                sm="6"
+                md="4"
+                lg="3"
+                xl="2"
+                style="padding: 0;margin-top:6px"
+              >
+                <lazy-product :product="prod" />
+              </v-col>
+            </v-row>
+            <v-row v-else>
+              <v-col
+                v-for="prod in productByBrand"
+                :key="prod.id"
+                cols="6"
+                sm="6"
+                md="4"
+                lg="3"
+                xl="2"
+                style="padding: 0;margin-top:6px"
+              >
+                <lazy-product :product="prod" />
+              </v-col>
+            </v-row>
           </v-row>
           <v-row v-else>
             <v-col>
@@ -115,54 +131,72 @@
 </template>
 
 <script>
-import product from "~/components/product.vue";
 export default {
-  components: { product },
-  name: "Shop",
+  name: "Category",
   data() {
     return {
-      brands: [],
+      brand: [],
       min: 1,
       max: 5000,
       range: [1, 5000],
       findByRange: false,
       product_found_by_range: [],
       countForLoad: 20,
-      initLoading: []
+      observeredLoad: []
     };
   },
   computed: {
-    getAllBrand() {
+    getAllBrands() {
       return this.$store.state.brand.brands;
     },
-    allProduct() {
-      return this.$store.state.product.products;
+
+    productByBrand() {
+      return this.$store.state.product.products
+        .filter(item => {
+          return (
+            item.category.map(
+              i =>
+                i.category_title.toLowerCase() ==
+                this.$route.params.category.toLowerCase()
+            )[0] === true
+          );
+        })
+        .slice(0, 20);
     },
-    productForFiler() {
-      return this.$store.state.product.products.slice(0, 30);
+    productByBrandforObserve() {
+      return this.$store.state.product.products.filter(item => {
+        return (
+          item.category.map(
+            i =>
+              i.category_title.toLowerCase() ==
+              this.$route.params.category.toLowerCase()
+          )[0] === true
+        );
+      });
     }
   },
   methods: {
     intesected() {
-      this.initLoading = this.$store.state.product.products.slice(
+      this.observeredLoad = this.productByBrandforObserve.slice(
         0,
-        (this.countForLoad += 20)
+        (this.countForLoad += 24)
       );
     },
     productByRange() {
-      if (this.brands.length == 0) {
-        this.product_found_by_range = this.productForFiler.filter(item => {
-          if (item.productdata[0].id != undefined) {
-            return (
-              item.productdata[0].sale_price >= this.range[0] &&
-              item.productdata[0].sale_price <= this.range[1]
-            );
+      if (this.brand.length == 0) {
+        this.product_found_by_range = this.productByBrandforObserve.filter(
+          item => {
+            if (item.productdata[0].id != undefined) {
+              return (
+                item.productdata[0].sale_price >= this.range[0] &&
+                item.productdata[0].sale_price <= this.range[1]
+              );
+            }
           }
-        });
-        this.product_found_by_range.slice(0, 20);
+        );
         this.findByRange = true;
       } else {
-        let primary = this.productForFiler.filter(item => {
+        let primary = this.productByBrandforObserve.filter(item => {
           if (item.productdata[0].id != undefined) {
             return (
               item.productdata[0].sale_price >= this.range[0] &&
@@ -172,26 +206,19 @@ export default {
         });
         this.product_found_by_range = primary.filter(item => {
           for (let i = 0; i < item.brand.length; i++) {
-            for (let j = 0; j < this.brands.length; j++) {
-              if (this.brands[j] == item.brand[i].brand_title) {
-                return this.brands[j] == item.brand[i].brand_title;
+            for (let j = 0; j < this.brand.length; j++) {
+              if (this.brand[j] == item.brand[i].brand_title) {
+                return this.brand[j] == item.brand[i].brand_title;
               }
             }
           }
         });
-        this.product_found_by_range.slice(0, 20);
         this.findByRange = true;
       }
+      console.log("Products");
     }
   },
-  watch: {
-    // brands(newValue, oldValue) {
-    //   this.productByRange();
-    // }
-    // range(newValue, oldValue) {
-    //   this.productByRange();
-    // }
-  },
+
   asyncData({ store }) {
     if (store.state.product.products.length === 0) {
       store.dispatch("brand/get_all_brands");

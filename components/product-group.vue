@@ -2,7 +2,7 @@
   <v-sheet class="mx-4 pa-2 my-3 elevation-1">
     <v-slide-group show-arrows>
       <v-slide-item
-        v-for="product in getSortedProduct"
+        v-for="product in products"
         :key="product.id"
         v-slot="{ active, toggle }"
       >
@@ -24,6 +24,12 @@
 <script>
 export default {
   name: "ProductGroup",
+  props: {
+    products: {
+      type: Array,
+      default: () => []
+    }
+  },
   data: () => ({
     model: null
   }),

@@ -1,20 +1,22 @@
 <template>
   <div class="brand__item p_relative rounded-lg elevation-2">
-    <v-img
-      class="rounded-lg brand__img"
-      :lazy-src="
-        category.category_image !== null
-          ? 'http://localhost:8000/uploads/media/' + category.category_image
-          : 'https://neilpatel.com/wp-content/uploads/2017/09/image-editing-tools.jpg'
-      "
-      height="120"
-      width="160"
-      :src="
-        category.category_image !== null
-          ? 'http://localhost:8000/uploads/media/' + category.category_image
-          : 'https://neilpatel.com/wp-content/uploads/2017/09/image-editing-tools.jpg'
-      "
-    ></v-img>
+    <nuxt-link :to="`/category/${category.category_title}`">
+      <v-img
+        class="rounded-lg brand__img"
+        :lazy-src="
+          category.category_image !== null
+            ? 'http://localhost:8000/uploads/media/' + category.category_image
+            : 'https://neilpatel.com/wp-content/uploads/2017/09/image-editing-tools.jpg'
+        "
+        height="120"
+        width="160"
+        :src="
+          category.category_image !== null
+            ? 'http://localhost:8000/uploads/media/' + category.category_image
+            : 'https://neilpatel.com/wp-content/uploads/2017/09/image-editing-tools.jpg'
+        "
+      ></v-img>
+    </nuxt-link>
     <span class="title_abs"
       ><span class="text-caption rounded-pill">{{
         category.category_title

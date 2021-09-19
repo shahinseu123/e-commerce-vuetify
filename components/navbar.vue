@@ -39,7 +39,7 @@
     <v-app-bar class="t__48 ma-auto" color="white" elevation="0" dense app>
       <v-spacer></v-spacer>
       <nuxt-link to="/"><v-btn text small>Home</v-btn></nuxt-link>
-      <nuxt-link to="/shop"><v-btn text small>Shop</v-btn></nuxt-link>
+      <!-- <nuxt-link to="/shop"><v-btn text small>Shop</v-btn></nuxt-link> -->
       <nuxt-link to="/blog"><v-btn text small>Blog</v-btn></nuxt-link>
       <nuxt-link to="/contact"><v-btn text small>contact</v-btn></nuxt-link>
       <nuxt-link to="/about"><v-btn text small>about</v-btn></nuxt-link>

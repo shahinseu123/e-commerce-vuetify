@@ -40,7 +40,11 @@
         <v-card v-if="searchText != '' && suggest.length > 0" class="abs_sugg">
           <v-list dense>
             <v-list-item-group>
-              <v-list-item v-for="item in suggest" :key="item.id">
+              <v-list-item
+                @click="selectItem(item.title)"
+                v-for="item in suggest"
+                :key="item.id"
+              >
                 <v-list-item-avatar>
                   <v-img
                     :src="
@@ -127,7 +131,7 @@
       </v-btn>
       <div class="d-none d-sm-none d-md-flex">
         <nuxt-link to="/"><v-btn text small>Home</v-btn></nuxt-link>
-        <nuxt-link to="/shop"><v-btn text small>Shop</v-btn></nuxt-link>
+        <!-- <nuxt-link to="/shop"><v-btn text small>Shop</v-btn></nuxt-link> -->
         <nuxt-link to="/blog"><v-btn text small>Blog</v-btn></nuxt-link>
         <nuxt-link to="/contact"><v-btn text small>contact</v-btn></nuxt-link>
         <nuxt-link to="/about"><v-btn text small>about</v-btn></nuxt-link>
@@ -139,7 +143,7 @@
       <div>
         <nuxt />
         <!-- snackbar  -->
-        <v-snackbar v-model="snackbar">
+        <v-snackbar v-model="snackbar" left>
           {{ text }}
 
           <template v-slot:action="{ attrs }">
@@ -155,7 +159,8 @@
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list> </v-list>
     </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
+    <footer />
+    <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
@@ -181,11 +186,11 @@ export default {
         title: "Home",
         to: "/"
       },
-      {
-        icon: "mdi-store",
-        title: "Shop",
-        to: "/shop"
-      },
+      // {
+      //   icon: "mdi-store",
+      //   title: "Shop",
+      //   to: "/shop"
+      // },
       {
         icon: "mdi-post-outline",
         title: "Blog",
@@ -210,6 +215,13 @@ export default {
     }
   },
   methods: {
+    selectItem(text) {
+      this.searchText = text;
+      this.$router.push({ path: "/product/" + text });
+      setTimeout(() => {
+        this.searchText = "";
+      }, 2000);
+    },
     showLogin() {
       $nuxt.$emit("show-login");
     },
