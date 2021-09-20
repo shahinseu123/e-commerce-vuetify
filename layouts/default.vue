@@ -67,7 +67,7 @@
           </v-list>
         </v-card>
       </div>
-      <v-badge class="mx-1" overlap color="red" content="8">
+      <v-badge class="mx-1" overlap color="red" :content="numberOfCartItems">
         <v-btn small icon>
           <v-icon small>mdi-cart</v-icon>
         </v-btn>
@@ -169,8 +169,10 @@
 <script>
 import login from "~/components/login.vue";
 export default {
+  name: "Default",
   components: { login },
   data: () => ({
+    numberOfCartItems: 0,
     showCatMenu: false,
     drawer: false,
     rightDrawer: false,
@@ -239,6 +241,12 @@ export default {
     }
   },
   mounted() {
+    this.$nuxt.$on("add-to-cart", () => {
+      if (sessionStorage.getItem("cartProduct") != undefined) {
+        let cartItems = JSON.parse(sessionStorage.getItem("cartProduct"));
+        this.numberOfCartItems = cartItems.length;
+      }
+    });
     this.$nuxt.$on("product-failed", text => {
       this.text = text;
       this.snackbar = true;
@@ -251,6 +259,10 @@ export default {
       this.text = text;
       this.snackbar = true;
     });
+    if (sessionStorage.getItem("cartProduct") != undefined) {
+      let cartItems = JSON.parse(sessionStorage.getItem("cartProduct"));
+      this.numberOfCartItems = cartItems.length;
+    }
   }
 };
 </script>

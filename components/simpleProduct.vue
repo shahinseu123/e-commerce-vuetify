@@ -261,6 +261,7 @@ export default {
         let totalPrice = productQntyObject.total_price;
         sessionStorage.setItem("totalPrice", totalPrice);
       }
+      $nuxt.$emit("add-to-cart")
     },
     // add to cart end
     getActiveIndex(index) {

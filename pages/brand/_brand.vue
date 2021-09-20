@@ -61,7 +61,7 @@
                 xl="2"
                 style="padding: 0;margin-top:6px"
               >
-                <lazy-product :product="prod" />
+                <lazy-product-two :product="prod" />
               </v-col>
             </v-row>
             <v-row v-else>
@@ -75,7 +75,7 @@
                 xl="2"
                 style="padding: 0;margin-top:6px"
               >
-                <lazy-product :product="prod" />
+                <lazy-product-two :product="prod" />
               </v-col>
             </v-row>
           </v-row>
@@ -99,7 +99,7 @@
               xl="2"
               style="padding: 0;margin-top:6px"
             >
-              <lazy-product :product="prod" />
+              <lazy-product-two :product="prod" />
             </v-col>
           </v-row>
           <v-row v-else>

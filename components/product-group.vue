@@ -6,7 +6,7 @@
         :key="product.id"
         v-slot="{ active, toggle }"
       >
-        <lazy-product
+        <lazy-product-two
           class="margin__10"
           :input-value="active"
           :product="product"
