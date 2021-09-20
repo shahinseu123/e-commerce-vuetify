@@ -90,7 +90,7 @@
         </div>
         <v-divider></v-divider>
         <div class=" my-3">
-          <v-btn class="" color="teal" dark small>
+          <v-btn @click="addToCart" class="" color="teal" dark small>
             <v-icon left>
               mdi-cart
             </v-icon>
@@ -165,12 +165,115 @@ export default {
     };
   },
   methods: {
+    // add to cart
+    addToCart() {
+      let productQntyObject = {
+        id: this.product[0].id,
+        product_data_id: this.product[0].productdata[0].id,
+        name: this.product[0].title,
+        qnty: this.qnty,
+        salePrice: this.product[0].productdata[0].sale_price,
+        total_price:
+          parseFloat(this.product[0].productdata[0].sale_price) * this.qnty
+      };
+      if (this.qnty > 0) {
+        if (
+          // check qnty already exist
+          sessionStorage.getItem("qntyArray") != null &&
+          JSON.parse(sessionStorage.getItem("qntyArray").length > 0)
+        ) {
+          let oldProductQntyArray = JSON.parse(
+            sessionStorage.getItem("qntyArray")
+          );
+          //check duplicate product id
+          let checkDuplicatInArray = oldProductQntyArray.filter(item => {
+            return item.id == productQntyObject.id;
+          });
+
+          if (checkDuplicatInArray.length > 0) {
+            this.textSnack = "Product already added to the cart";
+            this.snackbar = true;
+          } else {
+            let newProductQntyArray = [
+              productQntyObject,
+              ...oldProductQntyArray
+            ];
+            sessionStorage.setItem(
+              "qntyArray",
+              JSON.stringify(newProductQntyArray)
+            );
+            this.textSnack = "Product added to the cart";
+            this.snackbar = true;
+          }
+        } else {
+          let productQntyArray = [];
+          productQntyArray.push(productQntyObject);
+          sessionStorage.setItem("qntyArray", JSON.stringify(productQntyArray));
+          this.textSnack = "Product added to the cart";
+          this.snackbar = true;
+        }
+        // add product
+        if (sessionStorage.getItem("cartProduct") != undefined) {
+          let oldCartProduct = JSON.parse(
+            sessionStorage.getItem("cartProduct")
+          );
+          // check duplicate product
+          if (oldCartProduct.length > 0) {
+            let duplicateCartProduct = oldCartProduct.filter(item => {
+              return item.id === this.product[0].id;
+            });
+            if (duplicateCartProduct.length > 0) {
+              this.textSnack = "Product already added to the cart";
+              this.snackbar = true;
+            } else {
+              let cartProduct = [this.product[0], ...oldCartProduct];
+              sessionStorage.setItem(
+                "cartProduct",
+                JSON.stringify(cartProduct)
+              );
+              this.textSnack = "Product  added to the cart";
+              this.snackbar = true;
+            }
+          }
+        } else {
+          let cartProduct = [];
+          cartProduct.push(this.product[0]);
+          sessionStorage.setItem("cartProduct", JSON.stringify(cartProduct));
+          this.textSnack = "Product  added to the cart";
+          this.snackbar = true;
+        }
+      } else {
+        this.textSnack = "At least add one quantity";
+        this.snackbar = true;
+      }
+      // total price
+      if (sessionStorage.getItem("totalPrice") != undefined) {
+        let oldTotalPrice = sessionStorage.getItem("totalPrice");
+        if (oldTotalPrice != null) {
+          let newTotalPrice =
+            parseFloat(oldTotalPrice) + productQntyObject.total_price;
+          sessionStorage.setItem("totalPrice", newTotalPrice);
+        } else {
+          let totalPrice = productQntyObject.total_price;
+          sessionStorage.setItem("totalPrice", totalPrice);
+        }
+      } else {
+        let totalPrice = productQntyObject.total_price;
+        sessionStorage.setItem("totalPrice", totalPrice);
+      }
+    },
+    // add to cart end
     getActiveIndex(index) {
       this.activeIndex = index;
     },
     addQnty() {
       if (this.product[0].productdata[0].stock > 0) {
-        this.qnty++;
+        if (this.qnty == this.product[0].productdata[0].stock) {
+          this.textSnack = "Product quantity excieeded";
+          this.snackbar = true;
+        } else {
+          this.qnty++;
+        }
       } else {
         this.textSnack = "Product out of stock";
         this.snackbar = true;
@@ -287,10 +390,5 @@ export default {
 }
 .border {
   border: 2px solid teal;
-}
-.v-snack__wrappe {
-  position: fixed !important;
-  left: 10px !important;
-  bottom: 10px !important;
 }
 </style>

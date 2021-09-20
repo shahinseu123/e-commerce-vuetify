@@ -59,4 +59,7 @@ export default {
   font-size: 12px;
   margin-top: -14px;
 }
+.mt__nag {
+  margin-top: -30px;
+}
 </style>

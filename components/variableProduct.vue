@@ -3,7 +3,7 @@
     class="mt__28"
     v-if="product.length == 1 && product[0].productgallery.length > 0"
   >
-    <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="p__left_0">
+    <v-col cols="12" sm="12" md="5" lg="5" xl="5" class="p__left_0">
       <v-card id="over__hi__hight min__h">
         <v-img
           class="max__height"
@@ -14,31 +14,31 @@
         <div class="flex__img_th">
           <div
             class="flex__img_th"
-            v-for="(img, index) in product[0].productgallery"
+            v-for="(img, index) in product[0].productdata"
             :key="img.id"
           >
             <v-img
               @click="getActiveIndex(index)"
-              class="mx-1"
-              max-height="100"
-              max-width="100"
+              class="mx-1 border"
+              max-height="80"
+              max-width="80"
               :lazy-src="
-                `http://localhost:8000/uploads/media/${img.product_g_img}`
+                `http://localhost:8000/uploads/media/${img.variation_img}`
               "
-              :src="`http://localhost:8000/uploads/media/${img.product_g_img}`"
+              :src="`http://localhost:8000/uploads/media/${img.variation_img}`"
             ></v-img>
           </div>
         </div>
       </v-card>
     </v-col>
-    <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="p__right_0">
+    <v-col cols="12" sm="12" md="7" lg="7" xl="7" class="p__right_0">
       <v-card class="pa-5 min__h">
         <h2 class="text-uppercase mb-2 color__teal">Product details</h2>
         <v-divider></v-divider>
         <div class="flex__div my-3">
-          <h4 class="gray__color text-uppercase">This is product title</h4>
+          <h4 class="gray__color text-uppercase">{{ product[0].title }}</h4>
           <v-btn
-            v-if="product[0].productdata[0].stock > 0"
+            v-if="product[0].productdata[activeIndex].stock > 0"
             rounded
             x-small
             color="primary"
@@ -58,10 +58,12 @@
             depressed
             small
             class="text-uppercase mr-2"
-            >sale price: 345 TK</v-btn
+            >sale price:
+            {{ product[0].productdata[activeIndex].sale_price }} TK</v-btn
           >
           <v-btn color="red lighten-5" depressed small class="text-uppercase"
-            >old price: 345 TK</v-btn
+            >old price:
+            {{ product[0].productdata[activeIndex].regular_price }} TK</v-btn
           >
         </div>
         <v-divider></v-divider>
@@ -69,12 +71,73 @@
           <div class="flex__ddis">
             <span class="text-uppercase text-smal">quantity</span>
             <div class="counter_div mx-2">
-              <span><v-icon class="cp">mdi-plus</v-icon></span
-              ><span class="counter">20</span>
-              <span><v-icon class="cp">mdi-minus</v-icon></span>
+              <span><v-icon @click="addQnty" class="cp">mdi-plus</v-icon></span
+              ><span class="counter">{{ qnty }}</span>
+              <span
+                ><v-icon @click="removeQnty" class="cp">mdi-minus</v-icon></span
+              >
             </div>
-            <span class="text-uppercase text-smal">3 products available</span>
+            <span class="text-uppercase text-smal"
+              >{{ product[0].productdata[activeIndex].stock }} products
+              available</span
+            >
           </div>
+        </div>
+        <v-divider></v-divider>
+        <div class="my-3 ">
+          <h4 class="text-uppercase gray mb-3">Product variation</h4>
+          <span
+            class="mr-3 d-inline-block"
+            v-for="attr in product[0].productdata"
+            :key="attr.id"
+          >
+            <span
+              class=" flex_icons"
+              v-if="Object.values(JSON.parse(attr.product_excerpt)).length == 2"
+            >
+              <v-btn
+                fab
+                small
+                depressed
+                dark
+                :color="
+                  Object.keys(JSON.parse(attr.product_excerpt))[1] == 'Color'
+                    ? Object.values(
+                        JSON.parse(attr.product_excerpt)
+                      )[1].toLowerCase()
+                    : Object.values(
+                        JSON.parse(attr.product_excerpt)
+                      )[0].toLowerCase()
+                "
+              >
+                {{
+                  Object.keys(JSON.parse(attr.product_excerpt))[0] == "Color"
+                    ? Object.values(JSON.parse(attr.product_excerpt))[1]
+                    : Object.values(JSON.parse(attr.product_excerpt))[0]
+                }}
+              </v-btn>
+            </span>
+            <span v-else>
+              <v-btn
+                fab
+                small
+                depressed
+                :color="
+                  Object.keys(JSON.parse(attr.product_excerpt))[0] == 'Color'
+                    ? Object.values(
+                        JSON.parse(attr.product_excerpt)
+                      )[0].toLowerCase()
+                    : 'white'
+                "
+              >
+                {{
+                  Object.keys(JSON.parse(attr.product_excerpt))[0] == "Color"
+                    ? ""
+                    : Object.values(JSON.parse(attr.product_excerpt))[0]
+                }}
+              </v-btn>
+            </span>
+          </span>
         </div>
         <v-divider></v-divider>
         <div class=" my-3">
@@ -134,7 +197,7 @@
 
 <script>
 export default {
-  name: "SimpleProduct",
+  name: "VariableProduct",
   props: {
     product: {
       type: Array,
@@ -143,18 +206,47 @@ export default {
   },
   data() {
     return {
-      activeIndex: 0
+      activeIndex: 0,
+      qnty: 0,
+      snackbar: false,
+      textSnack: ""
     };
   },
   methods: {
     getActiveIndex(index) {
       this.activeIndex = index;
+    },
+    addQnty() {
+      if (this.product[0].productdata[this.activeIndex].stock > 0) {
+        if (this.qnty == this.product[0].productdata[this.activeIndex].stock) {
+          this.textSnack = "Product quantity excieeded";
+          this.snackbar = true;
+        } else {
+          this.qnty++;
+        }
+      } else {
+        this.textSnack = "Product out of stock";
+        this.snackbar = true;
+      }
+    },
+    removeQnty() {
+      if (this.qnty > 0) {
+        this.qnty--;
+      } else {
+        this.textSnack = "Product can't be less then zero";
+        this.snackbar = true;
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+.snackbar__cl {
+  position: fixed;
+  left: 3px;
+  bottom: 35px;
+}
 .gray {
   color: gray;
 }
@@ -171,7 +263,7 @@ export default {
 .flex__img_th {
   display: flex;
   justify-content: center;
-  padding: 5px;
+  padding: 3px 0;
 }
 .p__right_0 {
   padding-left: 2px;
@@ -238,10 +330,15 @@ export default {
   cursor: pointer;
 }
 .max__height {
-  height: 450px;
+  height: 458px;
+  /* height: 100%; */
+  overflow: hidden;
 }
 .min__h {
-  height: 542px;
+  height: 560px;
   overflow: hidden;
+}
+.border {
+  border: 2px solid teal;
 }
 </style>

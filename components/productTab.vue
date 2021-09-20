@@ -28,7 +28,9 @@
         </v-card>
       </v-tab-item>
       <v-tab-item>
-        <v-card flat> <product-group :products="topSellingProduct" /> </v-card>
+        <v-card flat>
+          <product-group :products="topSellingProduct" />
+        </v-card>
       </v-tab-item>
       <v-tab-item> <product-rating /> </v-tab-item>
       <v-tab-item> <rate-the-product /> </v-tab-item>
