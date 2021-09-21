@@ -337,22 +337,8 @@ export default {
         this.textSnack = "At least add one quantity";
         this.snackbar = true;
       }
-      // total price
-      // if (sessionStorage.getItem("totalPrice") != undefined) {
-      //   let oldTotalPrice = sessionStorage.getItem("totalPrice");
-      //   if (oldTotalPrice != null) {
-      //     let newTotalPrice =
-      //       parseFloat(oldTotalPrice) + productQntyObject.total_price;
-      //     sessionStorage.setItem("totalPrice", newTotalPrice);
-      //   } else {
-      //     let totalPrice = productQntyObject.total_price;
-      //     sessionStorage.setItem("totalPrice", totalPrice);
-      //   }
-      // } else {
-      //   let totalPrice = productQntyObject.total_price;
-      //   sessionStorage.setItem("totalPrice", totalPrice);
-      // }
-      // $nuxt.$emit("add-to-cart");
+
+      $nuxt.$emit("add-to-cart");
     },
     addQnty() {
       if (this.product[0].productdata[this.activeIndex].stock > 0) {
