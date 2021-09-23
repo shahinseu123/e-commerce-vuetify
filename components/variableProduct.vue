@@ -272,7 +272,10 @@ export default {
           this.snackbar = true;
         }
         // add product
-        if (sessionStorage.getItem("cartProduct") != undefined) {
+        if (
+          sessionStorage.getItem("cartProduct") != null &&
+          JSON.parse(sessionStorage.getItem("cartProduct")).length != 0
+        ) {
           let oldCartProduct = JSON.parse(
             sessionStorage.getItem("cartProduct")
           );

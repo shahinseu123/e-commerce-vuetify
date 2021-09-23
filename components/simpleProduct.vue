@@ -213,7 +213,8 @@ export default {
           this.snackbar = true;
         }
         // add product
-        if (sessionStorage.getItem("cartProduct") != undefined) {
+        if (sessionStorage.getItem("cartProduct") != null &&
+          JSON.parse(sessionStorage.getItem("cartProduct")).length != 0) {
           let oldCartProduct = JSON.parse(
             sessionStorage.getItem("cartProduct")
           );
@@ -261,7 +262,7 @@ export default {
         let totalPrice = productQntyObject.total_price;
         sessionStorage.setItem("totalPrice", totalPrice);
       }
-      $nuxt.$emit("add-to-cart")
+      $nuxt.$emit("add-to-cart");
     },
     // add to cart end
     getActiveIndex(index) {

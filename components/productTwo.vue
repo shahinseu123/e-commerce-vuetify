@@ -32,7 +32,7 @@
       <!-- <v-btn icon small color="">
         <v-icon small>mdi-heart</v-icon>
       </v-btn> -->
-      <span class="cp upcase text__small flex__center">
+      <span @click="buynow" class="cp upcase text__small flex__center">
         <v-icon class="mr-1" small>mdi-basket-plus</v-icon>
         buy now
       </span>
@@ -59,9 +59,114 @@ export default {
   data: () => ({
     qnty: 1,
     snackbar: false,
-    textSnack: ""
+    textSnack: "",
+    auth: ""
   }),
   methods: {
+    buynow() {
+      if (sessionStorage.getItem("myAuth") == "true") {
+        let productQntyObject = {
+          id: this.product.id,
+          product_data_id: this.product.productdata[0].id,
+          name: this.product.title,
+          qnty: this.qnty,
+          salePrice: this.product.productdata[0].sale_price,
+          total_price:
+            parseFloat(this.product.productdata[0].sale_price) * this.qnty
+        };
+        if (this.product.productdata[0].stock > 0) {
+          if (
+            // check qnty already exist
+            sessionStorage.getItem("qntyArray") != null &&
+            JSON.parse(sessionStorage.getItem("qntyArray").length > 0)
+          ) {
+            let oldProductQntyArray = JSON.parse(
+              sessionStorage.getItem("qntyArray")
+            );
+            //check duplicate product id
+            let checkDuplicatInArray = oldProductQntyArray.filter(item => {
+              return item.id == productQntyObject.id;
+            });
+
+            if (checkDuplicatInArray.length > 0) {
+              $nuxt.$emit(
+                "product-failed",
+                "Product already added to the cart"
+              );
+            } else {
+              let newProductQntyArray = [
+                productQntyObject,
+                ...oldProductQntyArray
+              ];
+              sessionStorage.setItem(
+                "qntyArray",
+                JSON.stringify(newProductQntyArray)
+              );
+              $nuxt.$emit("product-failed", "Product added to the cart");
+            }
+          } else {
+            let productQntyArray = [];
+            productQntyArray.push(productQntyObject);
+            sessionStorage.setItem(
+              "qntyArray",
+              JSON.stringify(productQntyArray)
+            );
+            $nuxt.$emit("product-failed", "Product added to the cart");
+          }
+          // add product
+          if (
+            sessionStorage.getItem("cartProduct") != null &&
+            JSON.parse(sessionStorage.getItem("cartProduct")).length != 0
+          ) {
+            let oldCartProduct = JSON.parse(
+              sessionStorage.getItem("cartProduct")
+            );
+            // check duplicate product
+            if (oldCartProduct.length > 0) {
+              let duplicateCartProduct = oldCartProduct.filter(item => {
+                return item.id === this.product.id;
+              });
+              if (duplicateCartProduct.length > 0) {
+                $nuxt.$emit(
+                  "product-failed",
+                  "Product already added to the cart"
+                );
+              } else {
+                let cartProduct = [this.product, ...oldCartProduct];
+                sessionStorage.setItem(
+                  "cartProduct",
+                  JSON.stringify(cartProduct)
+                );
+                if (sessionStorage.getItem("totalPrice") != undefined) {
+                  let oldTotalPrice = sessionStorage.getItem("totalPrice");
+                  if (oldTotalPrice != null) {
+                    let newTotalPrice =
+                      parseFloat(oldTotalPrice) + productQntyObject.total_price;
+                    sessionStorage.setItem("totalPrice", newTotalPrice);
+                  }
+                }
+                $nuxt.$emit("product-failed", "Product added to the cart");
+              }
+            }
+          } else {
+            let cartProduct = [];
+            cartProduct.push(this.product);
+            let totalPrice = productQntyObject.total_price;
+            sessionStorage.setItem("totalPrice", totalPrice);
+            sessionStorage.setItem("cartProduct", JSON.stringify(cartProduct));
+            $nuxt.$emit("product-failed", "Product added to the cart");
+          }
+
+          $nuxt.$emit("add-to-cart");
+        } else {
+          $nuxt.$emit("product-failed", "Product is out of stock");
+        }
+        this.$router.push({ path: "order" });
+      } else {
+        $nuxt.$emit("product-failed", "You need to login for buy this item");
+        $nuxt.$emit("open-login");
+      }
+    },
     addToCart() {
       let productQntyObject = {
         id: this.product.id,
@@ -106,7 +211,10 @@ export default {
           $nuxt.$emit("product-failed", "Product added to the cart");
         }
         // add product
-        if (sessionStorage.getItem("cartProduct") != undefined) {
+        if (
+          sessionStorage.getItem("cartProduct") != null &&
+          JSON.parse(sessionStorage.getItem("cartProduct")).length != 0
+        ) {
           let oldCartProduct = JSON.parse(
             sessionStorage.getItem("cartProduct")
           );
@@ -146,26 +254,14 @@ export default {
           $nuxt.$emit("product-failed", "Product added to the cart");
         }
 
-        // // total price
-        // if (sessionStorage.getItem("totalPrice") != undefined) {
-        //   let oldTotalPrice = sessionStorage.getItem("totalPrice");
-        //   if (oldTotalPrice != null) {
-        //     let newTotalPrice =
-        //       parseFloat(oldTotalPrice) + productQntyObject.total_price;
-        //     sessionStorage.setItem("totalPrice", newTotalPrice);
-        //   } else {
-        //     let totalPrice = productQntyObject.total_price;
-        //     sessionStorage.setItem("totalPrice", totalPrice);
-        //   }
-        // } else {
-        //   let totalPrice = productQntyObject.total_price;
-        //   sessionStorage.setItem("totalPrice", totalPrice);
-        // }
         $nuxt.$emit("add-to-cart");
       } else {
         $nuxt.$emit("product-failed", "Product is out of stock");
       }
     }
+  },
+  mounted() {
+    this.auth = sessionStorage.getItem("myAuth");
   }
 };
 </script>

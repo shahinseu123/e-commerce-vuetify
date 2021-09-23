@@ -68,7 +68,7 @@
         </v-card>
       </div>
       <v-badge class="mx-1" overlap color="red" :content="numberOfCartItems">
-        <v-btn small icon>
+        <v-btn @click.stop="cartDrawer = !cartDrawer" small icon>
           <v-icon small>mdi-cart</v-icon>
         </v-btn>
       </v-badge>
@@ -89,7 +89,7 @@
       <v-btn
         class="d-flex d-sm-flex d-md-none"
         icon
-        @click.stop="rightDrawer = !rightDrawer"
+        @click.stop="categoryDrawer = !categoryDrawer"
       >
         <v-icon>mdi-menu</v-icon>
       </v-btn>
@@ -156,8 +156,25 @@
     </v-main>
     <login />
     <register />
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
+    <v-navigation-drawer
+      v-model="categoryDrawer"
+      :right="right"
+      temporary
+      fixed
+    >
       <v-list> </v-list>
+    </v-navigation-drawer>
+    <v-navigation-drawer
+      color="teal lighten-5"
+      v-model="cartDrawer"
+      :right="right"
+      width="400"
+      temporary
+      fixed
+    >
+      <div class="pa-2">
+        <cart />
+      </div>
     </v-navigation-drawer>
     <footer />
     <v-footer app>
@@ -175,7 +192,8 @@ export default {
     numberOfCartItems: 0,
     showCatMenu: false,
     drawer: false,
-    rightDrawer: false,
+    categoryDrawer: false,
+    cartDrawer: false,
     right: true,
     clipped: false,
     fixed: true,
@@ -281,6 +299,9 @@ export default {
 }
 .t__48 {
   top: 48px;
+}
+.text__teal {
+  color: teal;
 }
 .search__input {
   padding: 5px 5px;
