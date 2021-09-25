@@ -73,6 +73,9 @@ export default {
       store.dispatch("product/get_all_product");
       store.dispatch("product/get_sorted_product");
     }
+  },
+  mounted() {
+    
   }
 };
 </script>

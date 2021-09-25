@@ -91,6 +91,7 @@ export default {
           sessionStorage.setItem("myAuth", true);
           // await this.$router.push("/user/dashboard");
           $nuxt.$emit("product-failed", "Login successfull");
+          $nuxt.$emit("login-success");
           this.dialog = false;
         } else {
           $nuxt.$emit("product-failed", "Login unsuccessfull, try again later");
@@ -108,6 +109,12 @@ export default {
     });
     this.$nuxt.$on("open-login", () => {
       this.dialog = true;
+    });
+    this.$nuxt.$on("set-auth", () => {
+      sessionStorage.setItem(
+        "authUser",
+        JSON.stringify(this.$store.state.auth.user)
+      );
     });
   }
 };

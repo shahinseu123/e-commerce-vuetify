@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="1" class="">
+  <v-card elevation="1" class="" max-width="500">
     <div class="d-flex">
       <div class="mr-2">
         <v-img
@@ -110,11 +110,13 @@ export default {
         return item.id != this.product.id;
       });
       sessionStorage.setItem("qntyArray", JSON.stringify(newQnty));
-      let oldTotalPrice = sessionStorage.getItem("totalPrice");
-      let newTotalPrice =
-        parseFloat(oldTotalPrice) -
-        parseFloat(this.product.productdata[0].sale_price);
-      sessionStorage.setItem("totalPrice", newTotalPrice);
+
+      let totalPrice = sessionStorage.getItem("totalPrice");
+
+      let newTotal = totalPrice - this.qntyObj.total_price;
+      sessionStorage.setItem("totalPrice", newTotal);
+      $nuxt.$emit("total-price");
+
       $nuxt.$emit("add-to-cart");
     },
     addQnty() {

@@ -67,6 +67,7 @@
           </v-list>
         </v-card>
       </div>
+      <v-spacer></v-spacer>
       <v-badge class="mx-1" overlap color="red" :content="numberOfCartItems">
         <v-btn @click.stop="cartDrawer = !cartDrawer" small icon>
           <v-icon small>mdi-cart</v-icon>
@@ -77,12 +78,12 @@
           <v-icon small>mdi-heart</v-icon>
         </v-btn>
       </v-badge>
-      <v-badge class="mx-1" overlap dot color="green">
-        <v-btn small icon>
+      <v-badge v-show="auth == 'true'" class="mx-1" overlap dot color="green">
+        <v-btn @click="gotoDashboard" small icon>
           <v-icon small>mdi-account</v-icon>
         </v-btn>
       </v-badge>
-      <v-btn @click="showLogin" class="mx-1" small text>
+      <v-btn v-show="auth != 'true'" @click="showLogin" class="mx-1" small text>
         <v-icon class="mx-1" small>mdi-login-variant</v-icon>
         Login
       </v-btn>
@@ -165,7 +166,7 @@
       <v-list> </v-list>
     </v-navigation-drawer>
     <v-navigation-drawer
-      color="teal lighten-5"
+      color="grey lighten-5"
       v-model="cartDrawer"
       :right="right"
       width="400"
@@ -200,6 +201,7 @@ export default {
     snackbar: false,
     text: "",
     searchText: "",
+    auth: false,
     items: [
       {
         icon: "mdi-home",
@@ -235,6 +237,9 @@ export default {
     }
   },
   methods: {
+    gotoDashboard() {
+      this.$router.push({ path: "/user/dashboard" });
+    },
     selectItem(text) {
       this.searchText = text;
       this.$router.push({ path: "/product/" + text });
@@ -259,6 +264,10 @@ export default {
     }
   },
   mounted() {
+    this.$nuxt.$on("login-success", () => {
+      this.auth = sessionStorage.getItem("myAuth");
+    });
+    this.auth = sessionStorage.getItem("myAuth");
     this.$nuxt.$on("add-to-cart", () => {
       if (sessionStorage.getItem("cartProduct") != undefined) {
         let cartItems = JSON.parse(sessionStorage.getItem("cartProduct"));
@@ -290,6 +299,9 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
+}
+.gray_c {
+  color: #e9ebec;
 }
 .app_var_z {
   z-index: 2 !important;

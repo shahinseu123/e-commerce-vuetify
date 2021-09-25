@@ -33,7 +33,9 @@
         <p class="text__bold text__gray">00 tk</p>
       </div>
       <span class="text__sm">Delivery charge inside dhaka(Free)</span>
-      <v-btn color="teal lighten-1 " dark small block>check out</v-btn>
+      <v-btn @click="gotocheckout" color="teal lighten-1 " dark small block
+        ><v-icon small left>mdi-arrow-right-thick</v-icon> check out</v-btn
+      >
     </v-card>
   </div>
 </template>
@@ -48,6 +50,20 @@ export default {
     qntyArray: [],
     totalPrice: 0
   }),
+  methods: {
+    gotocheckout() {
+      if (this.cartItems.length > 0 && this.qntyArray.length > 0) {
+        if (sessionStorage.getItem("myAuth") == "true") {
+          this.$router.push({ path: "order" });
+        } else {
+          $nuxt.$emit("product-failed", "You need to login for buy this item");
+          $nuxt.$emit("open-login");
+        }
+      } else {
+        $nuxt.$emit("product-failed", "Your cart is empty");
+      }
+    }
+  },
   mounted() {
     this.$nuxt.$on("total-price", () => {
       this.totalPrice = JSON.parse(sessionStorage.getItem("totalPrice"));
