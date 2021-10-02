@@ -1,22 +1,52 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+      <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="padding_right">
         <user-sidebar class="margin__t" />
+      </v-col>
+      <v-col cols="12" sm="6" md="6" lg="9" xl="10" class="padding_left">
+        <div class="margin__t">
+          <updateuser />
+          <updatePassword />
+        </div>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import updatePassword from "~/components/updatePassword.vue";
+import updateuser from "~/components/updateUser.vue";
 export default {
-  name: "UpdateUser",
-  middleware: ["isAuth"]
+  components: { updatePassword, updateuser },
+  name: "UpdateUserInfo",
+  middleware: ["isAuth"],
+  data: () => ({}),
+  methods: {},
+  mounted() {},
+  asyncData({ store }) {
+    if (store.state.product.products.length === 0) {
+      store.dispatch("brand/get_all_brands");
+      store.dispatch("category/get_all_category");
+      store.dispatch("product/get_all_product");
+      store.dispatch("product/get_sorted_product");
+      store.dispatch("wish/get_wish");
+    }
+  }
 };
 </script>
 
 <style scoped>
 .margin__t {
-  margin-top: 40px;
+  margin-top: 45px;
+}
+.padding_right {
+  padding-right: 5px;
+}
+.padding_left {
+  padding-left: 5px;
+}
+.gray {
+  color: gray;
 }
 </style>

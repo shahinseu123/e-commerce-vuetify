@@ -116,6 +116,13 @@ export default {
         JSON.stringify(this.$store.state.auth.user)
       );
     });
+    this.$nuxt.$on("get-auth-user", () => {
+      this.$store.dispatch("auth/get_auth_user");
+      sessionStorage.setItem(
+        "authUser",
+        JSON.stringify(this.$store.state.auth.user)
+      );
+    });
   }
 };
 </script>

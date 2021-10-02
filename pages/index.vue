@@ -72,11 +72,10 @@ export default {
       store.dispatch("category/get_all_category");
       store.dispatch("product/get_all_product");
       store.dispatch("product/get_sorted_product");
+      store.dispatch("wish/get_wish");
     }
   },
-  mounted() {
-    
-  }
+  mounted() {}
 };
 </script>
 <style scoped>

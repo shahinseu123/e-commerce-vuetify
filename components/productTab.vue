@@ -32,8 +32,8 @@
           <product-group :products="topSellingProduct" />
         </v-card>
       </v-tab-item>
-      <v-tab-item> <product-rating /> </v-tab-item>
-      <v-tab-item> <rate-the-product /> </v-tab-item>
+      <v-tab-item> <product-rating :product="product" /> </v-tab-item>
+      <v-tab-item> <rate-the-product :product="product" /> </v-tab-item>
     </v-tabs-items>
   </v-card>
 </template>
@@ -53,6 +53,10 @@ export default {
     topSellingProduct: {
       type: Array,
       default: () => []
+    },
+    product: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {

@@ -1,52 +1,54 @@
 <template>
   <v-card class="pa-5">
-    <v-card class=" pa-5 mb-2" elevation="0" color="teal lighten-5">
-      <div class="flex__tar">
-        <h4>Shahin Alam</h4>
-        <div>
-          <v-rating
-            v-model="rating"
-            background-color="teal lighten-3"
-            color="teal"
-          ></v-rating>
-        </div>
+    <div v-if="review.review.length > 0">
+      <div v-for="rate in review.review" :key="rate.id">
+        <v-card class=" pa-5 mb-2" elevation="0" color="grey lighten-5">
+          <div class="flex__tar">
+            <h4>{{ rate.user.name }}</h4>
+            <div>
+              <v-rating
+                background-color="teal lighten-3"
+                color="teal"
+                :value="rate.rating"
+              ></v-rating>
+            </div>
+          </div>
+          <p class="p_small">{{ rate.created_at }}</p>
+          <p class="mt-2">
+            {{ rate.review_text }}
+          </p>
+        </v-card>
       </div>
-      <p class="p_small">12.12.21345</p>
-      <p class="mt-2">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia
-        maiores veritatis nisi iusto, consequuntur placeat minus totam laborum
-        saepe excepturi at veniam dolore dolorem inventore. Voluptate a placeat
-        quis ab.
-      </p>
-    </v-card>
-    <v-card class=" pa-5 mb-2" elevation="0" color="teal lighten-5">
-      <div class="flex__tar">
-        <h4>Shahin Alam</h4>
-        <div>
-          <v-rating
-            v-model="rating"
-            background-color="teal lighten-3"
-            color="teal"
-          ></v-rating>
-        </div>
+    </div>
+    <div v-else>
+      <div class="dis__flex ">
+        <h1 class="text-uppercase text__gray">No review found</h1>
       </div>
-      <p class="p_small">12.12.21345</p>
-      <p class="mt-2">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia
-        maiores veritatis nisi iusto, consequuntur placeat minus totam laborum
-        saepe excepturi at veniam dolore dolorem inventore. Voluptate a placeat
-        quis ab.
-      </p>
-    </v-card>
+    </div>
   </v-card>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "Rating",
+  props: {
+    product: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data: () => ({
-    rating: 4
-  })
+    rating: null
+  }),
+  computed: {
+    ...mapState(["review"])
+  },
+  mounted() {
+    this.$store.dispatch("review/get_product_rating", {
+      product_id: this.product.id
+    });
+  }
 };
 </script>
 
@@ -61,5 +63,14 @@ export default {
 }
 .mt__nag {
   margin-top: -30px;
+}
+.dis__flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+.text__gray {
+  color: gray;
 }
 </style>

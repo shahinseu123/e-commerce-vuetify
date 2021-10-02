@@ -4,18 +4,19 @@
     :color="color"
     dark
     max-width="344"
-    height="150"
+    height="170"
   >
     <div class="d__flex">
       <div class="">
-        <h1>23 Orders</h1>
+        <h1>{{ products.length }} Orders</h1>
+        <p>{{ products.status }}</p>
       </div>
       <div>
-        <v-icon x-large>mdi-basket</v-icon>
+        <v-icon x-large>{{ icon }}</v-icon>
       </div>
     </div>
     <v-card-actions>
-      <v-btn outlined text class="mt-5">
+      <v-btn @click="goMyOrder" outlined text class="mt-2">
         more
         <v-icon small right>mdi-arrow-right</v-icon>
       </v-btn>
@@ -30,6 +31,19 @@ export default {
     color: {
       type: String,
       required: true
+    },
+    icon: {
+      type: String,
+      required: true
+    },
+    products: {
+      type: Array,
+      default: () => ({})
+    }
+  },
+  methods: {
+    goMyOrder() {
+      this.$router.push({ path: "/user/my-order" });
     }
   }
 };

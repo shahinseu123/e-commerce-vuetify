@@ -21,13 +21,13 @@ export const actions = {
            if (res.status === 200) {
                let data = await res.json()
                if(data.err) {
-                   this.$toast.error(data.err)
+                   $nuxt.$emit("product-failed",data.err)
                } else {
-                   this.$toast.success(data.msg)
+                   $nuxt.$emit("product-failed",data.msg)
                }
            }
         } catch (error) {
-            this.$toast.error('Something is wrong, please try again')
+            $nuxt.$emit("product-failed",'Something is wrong, please try again')
         }
     },
 

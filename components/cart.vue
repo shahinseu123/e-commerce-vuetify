@@ -33,7 +33,13 @@
         <p class="text__bold text__gray">00 tk</p>
       </div>
       <span class="text__sm">Delivery charge inside dhaka(Free)</span>
-      <v-btn @click="gotocheckout" color="teal lighten-1 " dark small block
+      <v-btn
+        @click="gotocheckout"
+        text
+        outlined
+        color="teal lighten-1"
+        small
+        block
         ><v-icon small left>mdi-arrow-right-thick</v-icon> check out</v-btn
       >
     </v-card>
@@ -54,7 +60,7 @@ export default {
     gotocheckout() {
       if (this.cartItems.length > 0 && this.qntyArray.length > 0) {
         if (sessionStorage.getItem("myAuth") == "true") {
-          this.$router.push({ path: "order" });
+          this.$router.push({ path: "/order" });
         } else {
           $nuxt.$emit("product-failed", "You need to login for buy this item");
           $nuxt.$emit("open-login");

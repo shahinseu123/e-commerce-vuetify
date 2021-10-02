@@ -68,12 +68,22 @@
         </v-card>
       </div>
       <v-spacer></v-spacer>
-      <v-badge class="mx-1" overlap color="red" :content="numberOfCartItems">
+      <v-badge
+        class="mx-1"
+        overlap
+        color="red"
+        :content="numberOfCartItems > 0 ? numberOfCartItems : 'O'"
+      >
         <v-btn @click.stop="cartDrawer = !cartDrawer" small icon>
           <v-icon small>mdi-cart</v-icon>
         </v-btn>
       </v-badge>
-      <v-badge class="mx-1" overlap color="red" content="8">
+      <v-badge
+        class="mx-1"
+        overlap
+        color="red"
+        :content="wishCount.length > 0 ? wishCount.length : 'O'"
+      >
         <v-btn small icon>
           <v-icon small>mdi-heart</v-icon>
         </v-btn>
@@ -107,30 +117,98 @@
         @click="showCatMenu = !showCatMenu"
         text
         color="primary"
-        class="cat__rel"
+        class="cat__rel ml__160"
       >
         <v-icon left>mdi-basket-plus</v-icon>
         shop by category
         <v-icon right>mdi-menu-down</v-icon>
         <!-- category items  -->
         <span v-show="showCatMenu" class="cat__abs">
-          <ul class="cat__ul">
-            <li class="li__dis">
-              <nuxt-link to="/">Category</nuxt-link
-              ><v-icon right>mdi-menu-down</v-icon>
-              <!-- sub menu  -->
-              <!-- <ul class="cat__ul_sub">
-                <li class="li__dis_sub">
-                  <nuxt-link to="/">Sub category</nuxt-link>
+          <ul v-if="getCategory.length > 0" class="cat_one_q">
+            <li
+              v-for="cat_one in getCategory"
+              :key="cat_one.id"
+              class="flex__li main_li_rel"
+            >
+              <div class="flex__li">
+                <v-img
+                  class="mr-2 rounded-circle"
+                  height="35"
+                  width="35"
+                  :src="
+                    cat_one.category_image != null
+                      ? 'http://localhost:8000/uploads/media/' +
+                        cat_one.category_image
+                      : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
+                  "
+                ></v-img>
+                <nuxt-link :to="`/category/${cat_one.category_title}`">{{
+                  cat_one.category_title
+                }}</nuxt-link>
+              </div>
+              <div>
+                <v-icon v-if="cat_one.child.length > 0">mdi-menu-down</v-icon>
+              </div>
+              <ul v-if="cat_one.child.length > 0" class="cat_two_ul ">
+                <li
+                  v-for="cat_two in cat_one.child"
+                  :key="cat_two.id"
+                  class="flex__li cat_tree_rel"
+                >
+                  <div class="flex__li">
+                    <v-img
+                      class="mr-2 rounded-circle"
+                      height="35"
+                      width="35"
+                      :src="
+                        cat_two.category_image != null
+                          ? 'http://localhost:8000/uploads/media/' +
+                            cat_two.category_image
+                          : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
+                      "
+                    ></v-img>
+                    <nuxt-link :to="`/category/${cat_two.category_title}`">{{
+                      cat_two.category_title
+                    }}</nuxt-link>
+                  </div>
+                  <div>
+                    <v-icon v-if="cat_two.child.length > 0"
+                      >mdi-menu-down</v-icon
+                    >
+                  </div>
+                  <ul v-if="cat_two.child.length > 0" class="cat_three_ul">
+                    <li
+                      v-for="cat_three in cat_two.child"
+                      :key="cat_three.id"
+                      class="flex__li"
+                    >
+                      <div class="flex__li">
+                        <v-img
+                          class="mr-2 rounded-circle"
+                          height="35"
+                          width="35"
+                          :src="
+                            cat_three.category_image != null
+                              ? 'http://localhost:8000/uploads/media/' +
+                                cat_three.category_image
+                              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
+                          "
+                        ></v-img>
+                        <nuxt-link
+                          :to="`/category/${cat_three.category_title}`"
+                          >{{ cat_three.category_title }}</nuxt-link
+                        >
+                      </div>
+                    </li>
+                  </ul>
                 </li>
-              </ul> -->
+              </ul>
             </li>
-            <li><nuxt-link to="/">Category</nuxt-link></li>
-            <li><nuxt-link to="/">Category</nuxt-link></li>
           </ul>
         </span>
       </v-btn>
-      <div class="d-none d-sm-none d-md-flex">
+
+      <div class="d-none d-sm-none d-md-flex ml__18">
         <nuxt-link to="/"><v-btn text small>Home</v-btn></nuxt-link>
         <!-- <nuxt-link to="/shop"><v-btn text small>Shop</v-btn></nuxt-link> -->
         <nuxt-link to="/blog"><v-btn text small>Blog</v-btn></nuxt-link>
@@ -149,7 +227,7 @@
 
           <template v-slot:action="{ attrs }">
             <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
-              Close
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </template>
         </v-snackbar>
@@ -160,10 +238,115 @@
     <v-navigation-drawer
       v-model="categoryDrawer"
       :right="right"
+      width="350"
       temporary
       fixed
     >
-      <v-list> </v-list>
+      <v-card>
+        <ul v-if="getCategory.length > 0" class="side__ul">
+          <li
+            v-for="cat_one in getCategory"
+            :key="cat_one.id"
+            class="side_ul_fir"
+          >
+            <div class="flex__li">
+              <div class="flex__li">
+                <v-img
+                  class="mr-2 rounded-circle"
+                  height="35"
+                  width="35"
+                  :src="
+                    cat_one.category_image != null
+                      ? 'http://localhost:8000/uploads/media/' +
+                        cat_one.category_image
+                      : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
+                  "
+                ></v-img>
+                <nuxt-link :to="`/category/${cat_one.category_title}`">{{
+                  cat_one.category_title
+                }}</nuxt-link>
+              </div>
+              <div>
+                <v-icon v-if="cat_one.child.length > 0">mdi-menu-down</v-icon>
+              </div>
+            </div>
+            <div>
+              <ul
+                v-if="cat_one.child.length > 0"
+                class="side__ul_two elevation-2"
+              >
+                <li
+                  v-for="cat_two in cat_one.child"
+                  :key="cat_two.id"
+                  class="slide_cat_sec"
+                >
+                  <div class="flex__li">
+                    <div class="flex__li">
+                      <v-img
+                        class="mr-2 rounded-circle"
+                        height="35"
+                        width="35"
+                        :src="
+                          cat_two.category_image != null
+                            ? 'http://localhost:8000/uploads/media/' +
+                              cat_two.category_image
+                            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
+                        "
+                      ></v-img>
+                      <nuxt-link :to="`/category/${cat_two.category_title}`">{{
+                        cat_two.category_title
+                      }}</nuxt-link>
+                    </div>
+                    <div>
+                      <v-icon v-if="cat_two.child.length > 0"
+                        >mdi-menu-down</v-icon
+                      >
+                    </div>
+                  </div>
+                  <!-- here  -->
+                  <div>
+                    <ul
+                      v-if="cat_two.child.length > 0"
+                      class="side__ul_three elevation-2"
+                    >
+                      <li
+                        v-for="cat_two in cat_one.child"
+                        :key="cat_two.id"
+                        class="slide_cat_sec"
+                      >
+                        <div class="flex__li">
+                          <div class="flex__li">
+                            <v-img
+                              class="mr-2 rounded-circle"
+                              height="35"
+                              width="35"
+                              :src="
+                                cat_two.category_image != null
+                                  ? 'http://localhost:8000/uploads/media/' +
+                                    cat_two.category_image
+                                  : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
+                              "
+                            ></v-img>
+                            <nuxt-link
+                              :to="`/category/${cat_two.category_title}`"
+                              >{{ cat_two.category_title }}</nuxt-link
+                            >
+                          </div>
+                          <!-- <div>
+                            <v-icon v-if="cat_two.child.length > 0"
+                              >mdi-menu-down</v-icon
+                            >
+                          </div> -->
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </v-card>
     </v-navigation-drawer>
     <v-navigation-drawer
       color="grey lighten-5"
@@ -177,9 +360,38 @@
         <cart />
       </div>
     </v-navigation-drawer>
-    <footer />
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+    <v-footer dark padless>
+      <v-card flat tile class="teal darken-1 white--text text-center">
+        <v-card-text>
+          <v-btn
+            v-for="icon in icons"
+            :key="icon"
+            class="mx-4 white--text"
+            icon
+          >
+            <v-icon size="24px">
+              {{ icon }}
+            </v-icon>
+          </v-btn>
+        </v-card-text>
+
+        <v-card-text class="white--text pt-0">
+          Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.
+          Mauris cursus commodo interdum. Praesent ut risus eget metus luctus
+          accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim
+          a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula
+          lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus
+          iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum
+          tempor vel ut orci. Orci varius natoque penatibus et magnis dis
+          parturient montes, nascetur ridiculus mus.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-text class="white--text">
+          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+        </v-card-text>
+      </v-card>
     </v-footer>
   </v-app>
 </template>
@@ -190,6 +402,7 @@ export default {
   name: "Default",
   components: { login },
   data: () => ({
+    icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
     numberOfCartItems: 0,
     showCatMenu: false,
     drawer: false,
@@ -234,6 +447,12 @@ export default {
   computed: {
     allRproduct() {
       return this.$store.state.product.products;
+    },
+    wishCount() {
+      return this.$store.state.wish.wish;
+    },
+    getCategory() {
+      return this.$store.state.category.categories;
     }
   },
   methods: {
@@ -352,40 +571,108 @@ export default {
 }
 .cat__abs {
   position: absolute;
-  top: 34px;
-  left: -15px;
-  width: auto;
-  width: 116%;
+  width: 135%;
+  left: -14px;
+  top: 35px;
   background: white;
-  padding-left: 0;
 }
-.cat__abs ul li {
+.cat_one_q {
+  padding: 0;
+}
+.cat_one_q li {
   list-style-type: none;
-  padding: 10px 10px;
-  text-align: left;
+  padding: 5px;
+  border-bottom: 1px solid #f0f0f4;
 }
-.cat__abs ul li:hover {
-  background: lightblue;
-}
+
 a {
   text-decoration: none;
 }
-.li__dis {
+.flex__li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
-.cat__ul {
-  padding: 0;
-}
-/* .li__dis {
+.main_li_rel {
   position: relative;
 }
-.li__dis_sub {
+.cat_two_ul {
   position: absolute;
-  left: 100%;
+  right: -100%;
   top: 0;
-  width: 100%;
-  height: auto;
   background: white;
-} */
+  padding: 0;
+  display: none;
+}
+.main_li_rel:hover .cat_two_ul {
+  display: block;
+}
+.cat_tree_rel {
+  position: relative;
+}
+.cat_three_ul {
+  position: absolute;
+  right: -87%;
+  top: 0;
+  background: white;
+  padding: 0;
+  display: none;
+}
+.cat_tree_rel:hover .cat_three_ul {
+  display: block;
+}
+.ml__160 {
+  margin-left: -160px;
+}
+.ml__18 {
+  margin-left: 18px;
+}
+.side__ul {
+  list-style-type: none;
+  padding: 0;
+}
+.side__ul li {
+  padding: 7px 10px;
+  border-bottom: 1px solid #f0f0f4;
+}
+.side_ul_fir {
+  position: relative;
+}
+.side__ul_two {
+  position: absolute;
+  left: 0;
+  top: 49px;
+  border-left: 4px solid teal;
+  padding: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: 0.5s all linear;
+  background: white;
+  z-index: 9;
+}
+.side_ul_fir:hover .side__ul_two {
+  height: auto;
+  transition: 1s;
+}
+.slide_cat_sec {
+  position: relative;
+}
+.side__ul_three {
+  position: absolute;
+  left: 0;
+  top: 49px;
+  border-left: 4px solid teal;
+  padding: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: 0.5s all linear;
+  background: white;
+  z-index: 9;
+}
+.slide_cat_sec:hover .side__ul_three {
+  height: auto;
+  transition: 1s;
+}
 </style>

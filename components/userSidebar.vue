@@ -49,7 +49,7 @@
             <v-list-item-title> Update Account </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="logout(5)">
+        <v-list-item @click="gotoLogout">
           <v-list-item-icon>
             <v-icon color="red">mdi-logout-variant</v-icon>
           </v-list-item-icon>
@@ -69,6 +69,22 @@ export default {
     selectedItem: 0
   }),
   methods: {
+    async gotoLogout() {
+      try {
+        let res = await fetch("http://localhost:8000/api/auth/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include"
+        });
+        if (res.status === 200) {
+          sessionStorage.removeItem("authUser");
+          sessionStorage.removeItem("userIndex");
+          sessionStorage.setItem("myAuth", false);
+          this.$router.push({ path: "/" });
+          $nuxt.$emit("login-success");
+        }
+      } catch (error) {}
+    },
     goDashboard(index) {
       sessionStorage.setItem("userIndex", index);
       this.$router.push({ path: "/user/dashboard" });

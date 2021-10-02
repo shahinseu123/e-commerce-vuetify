@@ -38,6 +38,15 @@ export default {
     qntyArray: [],
     totalPrice: 0
   }),
+  asyncData({ store }) {
+    if (store.state.product.products.length === 0) {
+      store.dispatch("brand/get_all_brands");
+      store.dispatch("category/get_all_category");
+      store.dispatch("product/get_all_product");
+      store.dispatch("product/get_sorted_product");
+      store.dispatch("wish/get_wish");
+    }
+  },
   mounted() {
     this.$nuxt.$on("total-price", () => {
       this.totalPrice = JSON.parse(sessionStorage.getItem("totalPrice"));

@@ -18,10 +18,12 @@
     <div class="mt-2">
       <h4 class="upcase gray__text">{{ product.title }}</h4>
     </div>
-    <div class="d__flex">
-      <p class="upcase font__size_sm teal__text">123 tk</p>
+    <div v-if="product.productdata[0] != undefined" class="d__flex">
+      <p class="upcase font__size_sm teal__text">
+        {{ product.productdata[0].sale_price }} tk
+      </p>
       <p class="upcase font__size_sm under_line red__text">
-        123 tk
+        {{ product.productdata[0].regular_price }} tk
       </p>
     </div>
     <div class="d__flex">
@@ -37,9 +39,13 @@
         buy now
       </span>
     </div>
-    <span class="heart_abssolute">
-      <v-badge color="red" overlap content="6">
-        <v-btn fab x-small elevation="1">
+    <span v-if="product.wish != undefined" class="heart_abssolute">
+      <v-badge
+        color="red"
+        overlap
+        :content="product.wish.length > 0 ? product.wish.length : 'O'"
+      >
+        <v-btn @click="addToWishList" fab x-small elevation="1">
           <v-icon small color="red">mdi-heart</v-icon>
         </v-btn>
       </v-badge>
@@ -63,6 +69,14 @@ export default {
     auth: ""
   }),
   methods: {
+    addToWishList() {
+      if (sessionStorage.getItem("myAuth") === "true") {
+        this.$store.dispatch("wish/create_wish", this.product.id);
+      } else {
+        $nuxt.$emit("product-failed", "To make wish, you need to login first");
+        $nuxt.$emit("show-login");
+      }
+    },
     buynow() {
       if (sessionStorage.getItem("myAuth") == "true") {
         let productQntyObject = {
@@ -167,6 +181,7 @@ export default {
         $nuxt.$emit("open-login");
       }
     },
+
     addToCart() {
       let productQntyObject = {
         id: this.product.id,

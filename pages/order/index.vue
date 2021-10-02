@@ -208,6 +208,7 @@
               <div class="mt-3">
                 <v-btn
                   block
+                  outlined
                   type="submit"
                   class="mb-2"
                   text
@@ -242,15 +243,15 @@ export default {
   name: "Checkout",
   middleware: ["isAuth"],
   data: () => ({
-    name: "",
-    email: "",
+    name: null,
+    email: null,
     phone: null,
-    city: "",
-    appertment: "",
-    state: "",
+    city: null,
+    appertment: null,
+    state: null,
     zip: null,
-    comment: "",
-    street: "",
+    comment: null,
+    street: null,
     nameRules: [v => !!v || "Name is required"],
     stateRules: [v => !!v || "State is required"],
     cityRules: [v => !!v || "City is required"],
@@ -279,6 +280,15 @@ export default {
     orderNow() {
       if (this.termsCondition == "true") {
         let cartQnty = JSON.parse(sessionStorage.getItem("qntyArray"));
+        if (
+          this.city == null ||
+          this.state == null ||
+          this.street == null ||
+          this.zip == null
+        ) {
+          $nuxt.$emit("product-failed", "Please fill the required filed");
+          return;
+        }
         this.$store.dispatch("order/create_an_order", {
           user_id: this.authUser.id,
           name: this.name,
@@ -344,6 +354,10 @@ export default {
     }
   },
   mounted() {
+    if (this.getCheckOutProduct == null) {
+      this.$router.push({ path: "/" });
+      $nuxt.$emit("product-failed", "Please add few items in cart");
+    }
     setTimeout(() => {
       this.setTextFiledValue();
     }, 1000);

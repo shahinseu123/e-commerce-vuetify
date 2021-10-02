@@ -78,8 +78,8 @@
               >
             </div>
             <span class="text-uppercase text-smal"
-              >{{ product[0].productdata[activeIndex].stock }} products
-              available</span
+              >{{ product[0].productdata[activeIndex].stock }}
+              {{ product[0].productdata[activeIndex].unit }} available</span
             >
           </div>
         </div>

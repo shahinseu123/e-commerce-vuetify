@@ -10,6 +10,7 @@
       <product-tab
         :relatedProduct="getRelatedProduct"
         :topSellingProduct="getTopSellingProduct"
+        :product="getSelectedProduct[0]"
       ></product-tab>
     </div>
     <div v-else>

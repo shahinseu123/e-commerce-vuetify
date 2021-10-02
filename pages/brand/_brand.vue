@@ -186,7 +186,7 @@ export default {
       if (this.categories.length == 0) {
         this.product_found_by_range = this.productByBrandforObserve.filter(
           item => {
-            if (item.productdata[0].id != undefined) {
+            if (item.productdata[0] != undefined) {
               return (
                 item.productdata[0].sale_price >= this.range[0] &&
                 item.productdata[0].sale_price <= this.range[1]
@@ -197,7 +197,7 @@ export default {
         this.findByRange = true;
       } else {
         let primary = this.productByBrandforObserve.filter(item => {
-          if (item.productdata[0].id != undefined) {
+          if (item.productdata[0] != undefined) {
             return (
               item.productdata[0].sale_price >= this.range[0] &&
               item.productdata[0].sale_price <= this.range[1]

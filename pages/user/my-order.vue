@@ -53,7 +53,16 @@
 <script>
 export default {
   name: "MyOrder",
-  middleware: ["isAuth"]
+  middleware: ["isAuth"],
+  asyncData({ store }) {
+    if (store.state.product.products.length === 0) {
+      store.dispatch("brand/get_all_brands");
+      store.dispatch("category/get_all_category");
+      store.dispatch("product/get_all_product");
+      store.dispatch("product/get_sorted_product");
+      store.dispatch("wish/get_wish");
+    }
+  }
 };
 </script>
 

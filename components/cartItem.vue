@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="1" class="" max-width="500">
+  <v-card elevation="1" class="" max-width="600">
     <div class="d-flex">
       <div class="mr-2">
         <v-img

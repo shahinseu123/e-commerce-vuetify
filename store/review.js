@@ -18,7 +18,7 @@ export const actions = {
             body: JSON.stringify(payload)
             })
             if(res.status === 200) {
-                this.$toast.success("Review created successfully")
+                $nuxt.$emit("product-failed", "Thanks for rate this product")
             }
         } catch (error) {
             this.$toast.error("Review failed, please try again")

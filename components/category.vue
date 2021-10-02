@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: "Brand",
+  name: "Category",
 
   data() {
     return {

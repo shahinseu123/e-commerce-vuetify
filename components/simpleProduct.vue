@@ -76,7 +76,8 @@
               >
             </div>
             <span class="text-uppercase text-smal"
-              >{{ product[0].productdata[0].stock }} products available</span
+              >{{ product[0].productdata[0].stock }}
+              {{ product[0].productdata[0].unit }} available</span
             >
           </div>
         </div>
@@ -213,8 +214,10 @@ export default {
           this.snackbar = true;
         }
         // add product
-        if (sessionStorage.getItem("cartProduct") != null &&
-          JSON.parse(sessionStorage.getItem("cartProduct")).length != 0) {
+        if (
+          sessionStorage.getItem("cartProduct") != null &&
+          JSON.parse(sessionStorage.getItem("cartProduct")).length != 0
+        ) {
           let oldCartProduct = JSON.parse(
             sessionStorage.getItem("cartProduct")
           );
