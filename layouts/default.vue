@@ -14,11 +14,12 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title class="text-uppercase" v-text="$t(item.title)" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar color="white" dense app elevation="0">
       <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
@@ -30,7 +31,7 @@
         <input
           type="text"
           v-model="searchText"
-          placeholder="Search product..."
+          :placeholder="$t('search')"
           class="search__input"
         />
         <span class="icon__abs ">
@@ -95,8 +96,9 @@
       </v-badge>
       <v-btn v-show="auth != 'true'" @click="showLogin" class="mx-1" small text>
         <v-icon class="mx-1" small>mdi-login-variant</v-icon>
-        Login
+        {{ $t("login") }}
       </v-btn>
+
       <v-btn
         class="d-flex d-sm-flex d-md-none"
         icon
@@ -117,10 +119,10 @@
         @click="showCatMenu = !showCatMenu"
         text
         color="primary"
-        class="cat__rel ml__160"
+        class="cat__rel "
       >
         <v-icon left>mdi-basket-plus</v-icon>
-        shop by category
+        {{ $t("all_category") }}
         <v-icon right>mdi-menu-down</v-icon>
         <!-- category items  -->
         <span v-show="showCatMenu" class="cat__abs">
@@ -142,9 +144,10 @@
                       : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
                   "
                 ></v-img>
-                <nuxt-link :to="`/category/${cat_one.category_title}`">{{
-                  cat_one.category_title
-                }}</nuxt-link>
+                <nuxt-link
+                  :to="localePath(`/category/${cat_one.category_title}`)"
+                  >{{ cat_one.category_title }}</nuxt-link
+                >
               </div>
               <div>
                 <v-icon v-if="cat_one.child.length > 0">mdi-menu-down</v-icon>
@@ -167,9 +170,10 @@
                           : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM8oE5gpw4fs_EdFLXESrR88AOx4y6a2SawQ&usqp=CAU'
                       "
                     ></v-img>
-                    <nuxt-link :to="`/category/${cat_two.category_title}`">{{
-                      cat_two.category_title
-                    }}</nuxt-link>
+                    <nuxt-link
+                      :to="localePath(`/category/${cat_two.category_title}`)"
+                      >{{ cat_two.category_title }}</nuxt-link
+                    >
                   </div>
                   <div>
                     <v-icon v-if="cat_two.child.length > 0"
@@ -195,7 +199,9 @@
                           "
                         ></v-img>
                         <nuxt-link
-                          :to="`/category/${cat_three.category_title}`"
+                          :to="
+                            localePath(`/category/${cat_three.category_title}`)
+                          "
                           >{{ cat_three.category_title }}</nuxt-link
                         >
                       </div>
@@ -209,13 +215,51 @@
       </v-btn>
 
       <div class="d-none d-sm-none d-md-flex ml__18">
-        <nuxt-link to="/"><v-btn text small>Home</v-btn></nuxt-link>
+        <nuxt-link :to="localePath('/')"
+          ><v-btn text small>{{ $t("home") }}</v-btn></nuxt-link
+        >
         <!-- <nuxt-link to="/shop"><v-btn text small>Shop</v-btn></nuxt-link> -->
-        <nuxt-link to="/blog"><v-btn text small>Blog</v-btn></nuxt-link>
-        <nuxt-link to="/contact"><v-btn text small>contact</v-btn></nuxt-link>
-        <nuxt-link to="/about"><v-btn text small>about</v-btn></nuxt-link>
+        <nuxt-link :to="localePath('/blog')"
+          ><v-btn text small>{{ $t("blog") }}</v-btn></nuxt-link
+        >
+        <nuxt-link :to="localePath('/contact')"
+          ><v-btn text small>{{ $t("contact") }}</v-btn></nuxt-link
+        >
+        <nuxt-link :to="localePath('/about')"
+          ><v-btn text small>{{ $t("about") }}</v-btn></nuxt-link
+        >
       </div>
       <v-spacer></v-spacer>
+      <v-btn
+        text
+        class="mx-1"
+        color="teal"
+        small
+        elevation="0"
+        v-if="$i18n.locale == 'bn'"
+        :to="switchLocalePath('en')"
+        ><v-img
+          src="https://tse1.mm.bing.net/th?id=OIP.Wd_e6eeepFA-p2vOL4pV2wHaER&pid=Api&P=0&w=261&h=151"
+          width="20"
+          class="mr-1"
+        ></v-img>
+        ENGLISH</v-btn
+      >
+      <v-btn
+        text
+        class="mx-1"
+        color="teal"
+        small
+        elevation="0"
+        v-else
+        :to="switchLocalePath('bn')"
+        ><v-img
+          width="20"
+          class="mr-1"
+          src="https://wallpapercave.com/wp/wp2401295.jpg"
+        ></v-img>
+        বাংলা</v-btn
+      >
     </v-app-bar>
     <!-- main  -->
     <v-main>
@@ -360,8 +404,8 @@
         <cart />
       </div>
     </v-navigation-drawer>
-    <v-footer dark padless>
-      <v-card flat tile class="teal darken-1 white--text text-center">
+    <v-footer dark padless class="mt-2">
+      <v-card flat tile class="theme_c white--text text-center">
         <v-card-text>
           <v-btn
             v-for="icon in icons"
@@ -418,7 +462,7 @@ export default {
     items: [
       {
         icon: "mdi-home",
-        title: "Home",
+        title: "home",
         to: "/"
       },
       // {
@@ -428,17 +472,17 @@ export default {
       // },
       {
         icon: "mdi-post-outline",
-        title: "Blog",
+        title: "blog",
         to: "/blog"
       },
       {
         icon: "mdi-information",
-        title: "Contact",
+        title: "contact",
         to: "/contact"
       },
       {
         icon: "mdi-account-box",
-        title: "About",
+        title: "about",
         to: "/about"
       }
     ],
@@ -483,6 +527,7 @@ export default {
     }
   },
   mounted() {
+    // console.log(this.$i18n.locale);
     this.$nuxt.$on("login-success", () => {
       this.auth = sessionStorage.getItem("myAuth");
     });
@@ -511,6 +556,7 @@ export default {
     }
   }
 };
+// $i18n.locale
 </script>
 
 <style scoped>
@@ -571,7 +617,7 @@ export default {
 }
 .cat__abs {
   position: absolute;
-  width: 135%;
+  /* width: 135%; */
   left: -14px;
   top: 35px;
   background: white;
@@ -598,7 +644,7 @@ a {
 }
 .cat_two_ul {
   position: absolute;
-  right: -100%;
+  right: -99%;
   top: 0;
   background: white;
   padding: 0;
@@ -674,5 +720,8 @@ a {
 .slide_cat_sec:hover .side__ul_three {
   height: auto;
   transition: 1s;
+}
+.theme_c {
+  background: #008080;
 }
 </style>

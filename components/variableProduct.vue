@@ -157,7 +157,7 @@
             </v-icon>
             add to cart
           </v-btn>
-          <v-btn class="" color="red lighten-2" dark small>
+          <v-btn class="" @click="buynow" color="red lighten-2" dark small>
             <v-icon left>
               mdi-basket
             </v-icon>
@@ -220,6 +220,120 @@ export default {
     };
   },
   methods: {
+    buynow() {
+      if (this.qnty == 0) {
+        $nuxt.$emit("product-failed", "At least add one quantity");
+      } else {
+        if (sessionStorage.getItem("myAuth") == "true") {
+          let productQntyObject = {
+            id: this.product[0].id,
+            product_data_id: this.product[0].productdata[this.activeIndex].id,
+            name: this.product[0].title,
+            qnty: this.qnty,
+            salePrice: this.product[0].productdata[this.activeIndex].sale_price,
+            total_price:
+              parseFloat(
+                this.product[0].productdata[this.activeIndex].sale_price
+              ) * this.qnty
+          };
+          if (this.product[0].productdata[this.activeIndex].stock > 0) {
+            if (
+              // check qnty already exist
+              sessionStorage.getItem("qntyArray") != null &&
+              JSON.parse(sessionStorage.getItem("qntyArray").length > 0)
+            ) {
+              let oldProductQntyArray = JSON.parse(
+                sessionStorage.getItem("qntyArray")
+              );
+              //check duplicate product id
+              let checkDuplicatInArray = oldProductQntyArray.filter(item => {
+                return item.id == productQntyObject.id;
+              });
+
+              if (checkDuplicatInArray.length > 0) {
+                $nuxt.$emit(
+                  "product-failed",
+                  "Product already added to the cart"
+                );
+              } else {
+                let newProductQntyArray = [
+                  productQntyObject,
+                  ...oldProductQntyArray
+                ];
+                sessionStorage.setItem(
+                  "qntyArray",
+                  JSON.stringify(newProductQntyArray)
+                );
+                $nuxt.$emit("product-failed", "Product added to the cart");
+              }
+            } else {
+              let productQntyArray = [];
+              productQntyArray.push(productQntyObject);
+              sessionStorage.setItem(
+                "qntyArray",
+                JSON.stringify(productQntyArray)
+              );
+              $nuxt.$emit("product-failed", "Product added to the cart");
+            }
+            // add product
+            if (
+              sessionStorage.getItem("cartProduct") != null &&
+              JSON.parse(sessionStorage.getItem("cartProduct")).length != 0
+            ) {
+              let oldCartProduct = JSON.parse(
+                sessionStorage.getItem("cartProduct")
+              );
+              // check duplicate product
+              if (oldCartProduct.length > 0) {
+                let duplicateCartProduct = oldCartProduct.filter(item => {
+                  return item.id === this.product.id;
+                });
+                if (duplicateCartProduct.length > 0) {
+                  $nuxt.$emit(
+                    "product-failed",
+                    "Product already added to the cart"
+                  );
+                } else {
+                  let cartProduct = [this.product[0], ...oldCartProduct];
+                  sessionStorage.setItem(
+                    "cartProduct",
+                    JSON.stringify(cartProduct)
+                  );
+                  if (sessionStorage.getItem("totalPrice") != undefined) {
+                    let oldTotalPrice = sessionStorage.getItem("totalPrice");
+                    if (oldTotalPrice != null) {
+                      let newTotalPrice =
+                        parseFloat(oldTotalPrice) +
+                        productQntyObject.total_price;
+                      sessionStorage.setItem("totalPrice", newTotalPrice);
+                    }
+                  }
+                  $nuxt.$emit("product-failed", "Product added to the cart");
+                }
+              }
+            } else {
+              let cartProduct = [];
+              cartProduct.push(this.product[0]);
+              let totalPrice = productQntyObject.total_price;
+              sessionStorage.setItem("totalPrice", totalPrice);
+              sessionStorage.setItem(
+                "cartProduct",
+                JSON.stringify(cartProduct)
+              );
+              $nuxt.$emit("product-failed", "Product added to the cart");
+            }
+
+            $nuxt.$emit("add-to-cart");
+            this.$router.push({ path: "/order" });
+          } else {
+            $nuxt.$emit("product-failed", "Product is out of stock");
+          }
+        } else {
+          $nuxt.$emit("product-failed", "You need to login for buy this item");
+          $nuxt.$emit("open-login");
+        }
+      }
+    },
     getActiveIndex(index) {
       this.activeIndex = index;
     },

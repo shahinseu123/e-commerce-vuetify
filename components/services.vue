@@ -1,32 +1,38 @@
 <template>
   <div id="intro">
-    <h1 class="my__heading white--text text-h4 pt-10">SERVICES</h1>
+    <h1 class="my__heading white--text text-h4 pt-10">
+      {{ $t("our_service") }}
+    </h1>
     <v-container>
       <v-row>
         <v-col cols="12" sm="6" md="3" lg="3" xl="3">
           <div class="flex__card mt-5">
             <v-icon x-large color="white">mdi-truck-delivery</v-icon>
-            <p class="text-uppercase mt-4 text-white">Free home delivery</p>
+            <p class="text-uppercase mt-4 text-white">
+              {{ $t("free_service") }}
+            </p>
           </div>
         </v-col>
         <v-col cols="12" sm="6" md="3" lg="3" xl="3">
           <div class="flex__card mt-5">
             <v-icon x-large color="white">mdi-clipboard-arrow-left</v-icon>
             <p class="text-uppercase mt-4 text-white">
-              Return product within 3 days
+              {{ $t("return_policy") }}
             </p>
           </div>
         </v-col>
         <v-col cols="12" sm="6" md="3" lg="3" xl="3">
           <div class="flex__card mt-5">
             <v-icon x-large color="white">mdi-face-agent</v-icon>
-            <p class="text-uppercase mt-4 text-white">24/7 customer service</p>
+            <p class="text-uppercase mt-4 text-white">{{ $t("support") }}</p>
           </div>
         </v-col>
         <v-col cols="12" sm="6" md="3" lg="3" xl="3">
           <div class="flex__card mt-5">
             <v-icon x-large color="white">mdi-basket</v-icon>
-            <p class="text-uppercase mt-4 text-white">100% genuin product</p>
+            <p class="text-uppercase mt-4 text-white">
+              {{ $t("genuin_product") }}
+            </p>
           </div>
         </v-col>
       </v-row>

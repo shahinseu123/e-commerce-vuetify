@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" sm="4" md="4" lg="3" xl="3" class="padding_right_0">
         <v-card class="elevation-0">
-          <h3 class="py-3 text-center border_tt">product range</h3>
+          <h4 class="py-3 text-center border_tt">product range</h4>
           <div class="price__el px-5 mt-5">
             <span>Start: {{ range[0] }}</span
             ><span>End: {{ range[1] }}</span>
@@ -25,7 +25,7 @@
           </v-card-text>
         </v-card>
         <v-card class="elevation-0 mt-1">
-          <h3 class="py-3 mb-5 text-center border_tt">Shop by category</h3>
+          <h4 class="py-3 mb-5 text-center border_tt">Shop by brand</h4>
           <div v-for="cat in getAllBrands" :key="cat.id" class="px-5">
             <v-checkbox
               @change="productByRange"
@@ -235,6 +235,12 @@ export default {
 .mt__10 {
   margin-top: 40px;
 }
+.padding_right_0 {
+  padding-right: 0;
+}
+.padding_left_5 {
+  padding-left: 5px;
+}
 .border_tt {
   border-bottom: 1px solid lightgray;
   font-size: 20px;
@@ -268,17 +274,20 @@ export default {
   font-weight: 500;
 }
 
-@media only screen and (max-width: 959px) {
-  .mt__10 {
-    margin-top: 0 !important;
-  }
-}
-@media only screen and (min-width: 600px) {
+/* @media only screen and (min-width: 600px) {
   .padding_right_0 {
     padding-right: 0;
   }
   .padding_left_5 {
     padding-left: 5px;
   }
+  .mt__10 {
+    margin-top: 0 !important;
+  }
 }
+@media only screen and (min-width: 959px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
+} */
 </style>

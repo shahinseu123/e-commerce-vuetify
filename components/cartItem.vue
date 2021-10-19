@@ -93,6 +93,10 @@ export default {
     index: {
       type: Number,
       default: 0
+    },
+    promosubmitted: {
+      type: String,
+      default: "false"
     }
   },
   data: () => ({
@@ -100,63 +104,86 @@ export default {
   }),
   methods: {
     removeFromCart() {
-      let products = JSON.parse(sessionStorage.getItem("cartProduct"));
-      let newArray = products.filter(item => {
-        return item.id != this.product.id;
-      });
-      sessionStorage.setItem("cartProduct", JSON.stringify(newArray));
-      let productQnty = JSON.parse(sessionStorage.getItem("qntyArray"));
-      let newQnty = productQnty.filter(item => {
-        return item.id != this.product.id;
-      });
-      sessionStorage.setItem("qntyArray", JSON.stringify(newQnty));
+      if (this.promosubmitted != "true") {
+        let products = JSON.parse(sessionStorage.getItem("cartProduct"));
+        let newArray = products.filter(item => {
+          return item.id != this.product.id;
+        });
+        sessionStorage.setItem("cartProduct", JSON.stringify(newArray));
+        let productQnty = JSON.parse(sessionStorage.getItem("qntyArray"));
+        let newQnty = productQnty.filter(item => {
+          return item.id != this.product.id;
+        });
+        sessionStorage.setItem("qntyArray", JSON.stringify(newQnty));
 
-      let totalPrice = sessionStorage.getItem("totalPrice");
+        let totalPrice = sessionStorage.getItem("totalPrice");
 
-      let newTotal = totalPrice - this.qntyObj.total_price;
-      sessionStorage.setItem("totalPrice", newTotal);
-      $nuxt.$emit("total-price");
+        let newTotal = totalPrice - this.qntyObj.total_price;
+        sessionStorage.setItem("totalPrice", newTotal);
+        $nuxt.$emit("total-price");
 
-      $nuxt.$emit("add-to-cart");
+        $nuxt.$emit("add-to-cart");
+      } else {
+        $nuxt.$emit(
+          "product-failed",
+          "Can not add or remove item after coupon submission"
+        );
+      }
     },
     addQnty() {
-      if (this.product.productdata[0].stock > 0) {
-        if (this.qntyObj.qnty == this.product.productdata[0].stock) {
-          $nuxt.$emit("product-failed", "Products quantity excieeded");
+      if (this.promosubmitted != "true") {
+        if (this.product.productdata[0].stock > 0) {
+          if (this.qntyObj.qnty == this.product.productdata[0].stock) {
+            $nuxt.$emit("product-failed", "Products quantity excieeded");
+          } else {
+            this.qntyObj.qnty++;
+            let productQnty = JSON.parse(sessionStorage.getItem("qntyArray"));
+            this.qntyObj.total_price =
+              this.qntyObj.qnty * this.qntyObj.salePrice;
+            productQnty[this.index] = this.qntyObj;
+            sessionStorage.setItem("qntyArray", JSON.stringify(productQnty));
+            let totalPrice = sessionStorage.getItem("totalPrice");
+            let newTotal =
+              parseFloat(totalPrice) + parseFloat(this.qntyObj.salePrice);
+            sessionStorage.setItem("totalPrice", newTotal);
+            $nuxt.$emit("total-price");
+          }
         } else {
-          this.qntyObj.qnty++;
+          $nuxt.$emit("product-failed", "Product is out of stock");
+        }
+      } else {
+        $nuxt.$emit(
+          "product-failed",
+          "Can not add or remove item after coupon submission"
+        );
+      }
+    },
+    removeQnty() {
+      if (this.promosubmitted != "true") {
+        if (this.qntyObj.qnty > 1) {
+          this.qntyObj.qnty--;
           let productQnty = JSON.parse(sessionStorage.getItem("qntyArray"));
           this.qntyObj.total_price = this.qntyObj.qnty * this.qntyObj.salePrice;
           productQnty[this.index] = this.qntyObj;
           sessionStorage.setItem("qntyArray", JSON.stringify(productQnty));
           let totalPrice = sessionStorage.getItem("totalPrice");
           let newTotal =
-            parseFloat(totalPrice) + parseFloat(this.qntyObj.salePrice);
+            parseFloat(totalPrice) - parseFloat(this.qntyObj.salePrice);
           sessionStorage.setItem("totalPrice", newTotal);
           $nuxt.$emit("total-price");
+        } else {
+          this.textSnack = "Product can't be less then one";
+          this.snackbar = true;
         }
       } else {
-        $nuxt.$emit("product-failed", "Product is out of stock");
-      }
-    },
-    removeQnty() {
-      if (this.qntyObj.qnty > 1) {
-        this.qntyObj.qnty--;
-        let productQnty = JSON.parse(sessionStorage.getItem("qntyArray"));
-        this.qntyObj.total_price = this.qntyObj.qnty * this.qntyObj.salePrice;
-        productQnty[this.index] = this.qntyObj;
-        sessionStorage.setItem("qntyArray", JSON.stringify(productQnty));
-        let totalPrice = sessionStorage.getItem("totalPrice");
-        let newTotal =
-          parseFloat(totalPrice) - parseFloat(this.qntyObj.salePrice);
-        sessionStorage.setItem("totalPrice", newTotal);
-        $nuxt.$emit("total-price");
-      } else {
-        this.textSnack = "Product can't be less then one";
-        this.snackbar = true;
+        $nuxt.$emit(
+          "product-failed",
+          "Can not add or remove item after coupon submission"
+        );
       }
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 

@@ -134,10 +134,22 @@
                         {{ prod.total_price }} TK
                       </td>
                     </tr>
+                    <tr v-show="promoSubmitted == 'true'">
+                      <td class="text__left grey-text text__sm">Discount</td>
+                      <td class="text__right grey-text text__sm">
+                        {{ discount_amount }} TK
+                      </td>
+                    </tr>
                     <tr>
                       <td class="text__left grey-text text__sm"></td>
                       <td class="text__right grey-text text__md pt-3">
-                        Total {{ totalPrice }} TK
+                        Total
+                        {{
+                          promoSubmitted == "true"
+                            ? discountTotalPrice
+                            : totalPrice
+                        }}
+                        TK
                       </td>
                     </tr>
                   </tbody>
@@ -162,7 +174,13 @@
                     <tr>
                       <td class="text__left grey-text text__sm">Product</td>
                       <td class="text__left grey-text text__sm">
-                        Price: {{ totalPrice }} TK
+                        Price:
+                        {{
+                          promoSubmitted == "true"
+                            ? discountTotalPrice
+                            : totalPrice
+                        }}
+                        TK
                       </td>
                     </tr>
                     <tr>
@@ -274,7 +292,10 @@ export default {
     delivery_charge: 50,
     radioGroup: 1,
     termsCondition: "false",
-    authUser: null
+    authUser: null,
+    promoSubmitted: "false",
+    discountTotalPrice: 0,
+    discount_amount: 0
   }),
   methods: {
     orderNow() {
@@ -308,7 +329,7 @@ export default {
           tax_amount: 0,
           other_cost: 0,
           discount: 0,
-          discount_amount: 0,
+          discount_amount: this.discount_amount,
           // payment
           payment_method: "Cash on delivery",
           payment_transaction_id: null,
@@ -342,7 +363,13 @@ export default {
       return JSON.parse(sessionStorage.getItem("qntyArray"));
     },
     makeTotal() {
-      return parseFloat(this.totalPrice) + parseFloat(this.delivery_charge);
+      return (
+        parseFloat(
+          this.promoSubmitted == "true"
+            ? this.discountTotalPrice
+            : this.totalPrice
+        ) + parseFloat(this.delivery_charge)
+      );
     }
   },
   asyncData({ store }) {
@@ -354,6 +381,9 @@ export default {
     }
   },
   mounted() {
+    this.promoSubmitted = sessionStorage.getItem("promoSubmitted");
+    this.discount_amount = sessionStorage.getItem("discountAmount");
+    this.discountTotalPrice = sessionStorage.getItem("discountTotalPrice");
     if (this.getCheckOutProduct == null) {
       this.$router.push({ path: "/" });
       $nuxt.$emit("product-failed", "Please add few items in cart");

@@ -21,7 +21,7 @@ export const actions = {
                 $nuxt.$emit("product-failed", "Thanks for rate this product")
             }
         } catch (error) {
-            this.$toast.error("Review failed, please try again")
+            
         }
         
     },
