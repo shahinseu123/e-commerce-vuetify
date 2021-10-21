@@ -33,10 +33,14 @@
     </v-col>
     <v-col cols="12" sm="12" md="7" lg="7" xl="7" class="p__right_0">
       <v-card class="pa-5 min__h">
-        <h2 class="text-uppercase mb-2 color__teal">Product details</h2>
+        <h2 class="text-uppercase mb-2 color__teal">
+          {{ $t("product_details") }}
+        </h2>
         <v-divider></v-divider>
         <div class="flex__div my-3">
-          <h4 class="gray__color text-uppercase">{{ product[0].title }}</h4>
+          <h4 class="gray__color text-uppercase">
+            {{ $i18n.locale == "en" ? product[0].title : product[0].title_bd }}
+          </h4>
           <v-btn
             v-if="product[0].productdata[0].stock > 0"
             rounded
@@ -45,10 +49,10 @@
             dark
             depressed
           >
-            In Stock
+            {{ $i18n.locale == "en" ? "In Stock" : "স্টক আছে" }}
           </v-btn>
           <v-btn v-else rounded x-small color="red lighten-2" dark depressed>
-            Out of Stock
+            {{ $i18n.locale == "en" ? "Out of Stock" : "স্টক নেই" }}
           </v-btn>
         </div>
         <v-divider></v-divider>
@@ -58,16 +62,18 @@
             depressed
             small
             class="text-uppercase mr-2"
-            >sale price: {{ product[0].productdata[0].sale_price }} TK</v-btn
+            >{{ $t("sale_price") }}: {{ product[0].productdata[0].sale_price }}
+            {{ $t("tk") }}</v-btn
           >
           <v-btn color="red lighten-5" depressed small class="text-uppercase"
-            >old price: {{ product[0].productdata[0].regular_price }} TK</v-btn
+            >{{ $t("old_price") }}:
+            {{ product[0].productdata[0].regular_price }} {{ $t("tk") }}</v-btn
           >
         </div>
         <v-divider></v-divider>
         <div class=" my-3">
           <div class="flex__ddis">
-            <span class="text-uppercase text-smal">quantity</span>
+            <span class="text-uppercase text-smal">{{ $t("quantity") }}</span>
             <div class="counter_div mx-2">
               <span><v-icon class="cp" @click="addQnty">mdi-plus</v-icon></span
               ><span class="counter">{{ qnty }}</span>
@@ -77,17 +83,25 @@
             </div>
             <span class="text-uppercase text-smal"
               >{{ product[0].productdata[0].stock }}
-              {{ product[0].productdata[0].unit }} available</span
+              {{ $t(product[0].productdata[0].unit) }}
+              {{ $t("available") }}</span
             >
           </div>
         </div>
         <v-divider></v-divider>
         <div class=" my-3">
-          <h4 class="text-uppercase gray">
-            Product description
+          <h4 class="text-uppercase gray mb-2">
+            {{ $t("product_details") }}
           </h4>
 
-          <p v-html="product[0].description" class="small_text"></p>
+          <p
+            v-html="
+              $i18n.locale == 'en'
+                ? product[0].description
+                : product[0].description_bd
+            "
+            class="small_text"
+          ></p>
         </div>
         <v-divider></v-divider>
         <div class=" my-3">
@@ -95,18 +109,18 @@
             <v-icon left>
               mdi-cart
             </v-icon>
-            add to cart
+            {{ $t("add_to_cart") }}
           </v-btn>
           <v-btn class="" @click="buynow" color="red lighten-2" dark small>
             <v-icon left>
               mdi-basket
             </v-icon>
-            buy this item
+            {{ $t("buy_now") }}
           </v-btn>
         </div>
         <v-divider></v-divider>
         <div class=" my-3">
-          <h4 class="text-uppercase gray mb-2">follow us on</h4>
+          <h4 class="text-uppercase gray mb-2">{{ $t("follow_us") }}</h4>
           <v-btn icon color="teal" class="ml_2">
             <v-icon color="red lighten-2">mdi-facebook</v-icon>
           </v-btn>
@@ -127,10 +141,7 @@
           </v-btn>
         </div>
         <div>
-          <p>
-            **We support's all kinds of payment system also support on payment
-            delivery
-          </p>
+          <p>**{{ $t("support_payment") }}</p>
         </div>
       </v-card>
     </v-col>
@@ -424,7 +435,7 @@ export default {
   margin-top: 28px;
 }
 .small_text {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
 }
 .flex__img_th {

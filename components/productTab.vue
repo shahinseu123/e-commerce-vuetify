@@ -6,16 +6,16 @@
           <v-tabs-slider color="teal"></v-tabs-slider>
 
           <v-tab>
-            related products
+            {{ $t("related_product") }}
           </v-tab>
           <v-tab>
-            top selling product
+            {{ $t("top_selling_prod") }}
           </v-tab>
           <v-tab>
-            product rateings
+            {{ $t("product_rating") }}
           </v-tab>
           <v-tab>
-            rate the product
+            {{ $t("rate_the_product") }}
           </v-tab>
         </v-tabs>
       </template>

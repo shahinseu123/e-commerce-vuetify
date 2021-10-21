@@ -8,7 +8,7 @@
         v-if="coupon.discount_type == 'persentage_discount'"
         class="white--text text-h3 discount"
       >
-        {{ coupon.discount_amount }}% Discount
+        {{ coupon.discount_amount }}% {{ $t("discount") }}
       </h2>
       <h2
         v-else-if="coupon.discount_type == 'fixed_cart_discount'"
@@ -43,19 +43,11 @@
     </div>
     <div v-else>
       <h2 class="white--text text-h3 discount">
-        No Coupon available
+        {{ $t("no_coupon_av") }}
       </h2>
 
-      <p class="pera">On order value of 300 and above</p>
-      <p class="pera">
-        * Our discount is only valid online and on selected items only.
-      </p>
-      <div class="promodiv">
-        <p class="promocode">
-          PROMO CODE
-          <v-icon color="teal lighten-1">mdi-arrow-right-bold</v-icon>
-          No promo code available
-        </p>
+      <div class="promodiv w__200">
+        <p class="mt-5 text-white ">{{ $t("coupon_realease") }}</p>
       </div>
     </div>
     <!-- count down  -->
@@ -81,9 +73,19 @@ export default {
   width: 100%;
   background: teal;
 }
+.w__200 {
+  width: 650px;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: normal;
+  font-size: 20px;
+}
 .flex__p {
   color: white;
   text-align: center;
+}
+.text-white {
+  color: white;
 }
 .promodiv {
   display: flex;

@@ -22,7 +22,7 @@
     </div>
     <div v-else>
       <div class="dis__flex ">
-        <h1 class="text-uppercase text__gray">No review found</h1>
+        <h1 class="text-uppercase text__gray">{{ $t("no_review") }}</h1>
       </div>
     </div>
   </v-card>

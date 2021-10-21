@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-1 mb-1 card_rel" max-width="250" elevation="0">
-    <nuxt-link :to="`/product/${product.title}`">
+    <nuxt-link :to="localePath(`/product/${product.title}`)">
       <v-img
         style="height: 180px"
         :lazy-src="
@@ -16,27 +16,29 @@
       ></v-img>
     </nuxt-link>
     <div class="mt-2">
-      <h4 class="upcase gray__text">{{ product.title }}</h4>
+      <h4 class="upcase gray__text">
+        {{ $i18n.locale == "en" ? product.title : product.title_bd }}
+      </h4>
     </div>
     <div v-if="product.productdata[0] != undefined" class="d__flex">
       <p class="upcase font__size_sm teal__text">
-        {{ product.productdata[0].sale_price }} tk
+        {{ product.productdata[0].sale_price }} {{ $t("tk") }}
       </p>
       <p class="upcase font__size_sm under_line red__text">
-        {{ product.productdata[0].regular_price }} tk
+        {{ product.productdata[0].regular_price }} {{ $t("tk") }}
       </p>
     </div>
     <div class="d__flex">
       <span @click="addToCart" class="cp upcase text__small flex__center">
         <v-icon class="mr-1" small>mdi-cart</v-icon>
-        add to cart
+        {{ $t("add_to_cart") }}
       </span>
       <!-- <v-btn icon small color="">
         <v-icon small>mdi-heart</v-icon>
       </v-btn> -->
       <span @click="buynow" class="cp upcase text__small flex__center">
         <v-icon class="mr-1" small>mdi-basket-plus</v-icon>
-        buy now
+        {{ $t("buy_now") }}
       </span>
     </div>
     <span v-if="product.wish != undefined" class="heart_abssolute">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="text-uppercase py-2 teal__text">cart items</h3>
+    <h3 class="text-uppercase py-2 teal__text">{{ $t("cart_item") }}</h3>
     <v-divider class="mb-2"></v-divider>
     <div v-if="cartItems.length > 0">
       <div v-for="(item, index) in cartItems" :key="item.id">
@@ -14,13 +14,13 @@
       </div>
       <div v-if="$store.state.coupon.coupon !== null">
         <p class="mt-4 text-uppercase bold__text ">
-          Put promo code here
+          {{ $t("put_the_promo") }}
         </p>
         <v-text-field
           class="mar__12"
           :rules="rules.name"
           v-model="promo_code"
-          label="Promo code"
+          :label="$t('promo_code')"
           outlined
           clearable
         ></v-text-field>
@@ -30,25 +30,26 @@
           outlined
           color="teal lighten-1"
           block
-          ><v-icon left>mdi-emoticon-poop</v-icon> submit the promo code</v-btn
+          ><v-icon left>mdi-emoticon-poop</v-icon>
+          {{ $t("submit_the_promo") }}</v-btn
         >
       </div>
     </div>
     <div v-else>
       <v-card elevation="1">
         <div class="dis__flex py-15">
-          <h2 class="gray text-uppercase">Your cart is empty</h2>
+          <h2 class="gray text-uppercase">{{ $t("cart_empty") }}</h2>
         </div>
       </v-card>
     </div>
     <v-card elevation="1" class="mt-2 pa-2">
       <h3 class="py-2  teal__text text-uppercase">
-        Total
+        {{ $t("total") }}
       </h3>
       <v-divider></v-divider>
       <div class="d__flex  mt-2 mb__10">
-        <p class="text__bold text__gray">Sub total</p>
-        <p class="text__bold text__gray">{{ totalPrice }} tk</p>
+        <p class="text__bold text__gray">{{ $t("subtotal") }}</p>
+        <p class="text__bold text__gray">{{ totalPrice }} {{ $t("tk") }}</p>
       </div>
       <div v-if="getCoupon">
         <div v-show="promoSubmitted == 'true'" class="d__flex  mt-2 mb__10">
@@ -56,47 +57,53 @@
             v-if="getCoupon.discount_type == 'persentage_discount'"
             class="text__bold text__gray"
           >
-            Discount
+            {{ $t("discount") }}
             <span class="red__text"
-              >[{{ getCoupon.discount_amount }}% Removed]</span
+              >[{{ getCoupon.discount_amount }}% {{ $t("removed") }}]</span
             >
           </p>
           <p
             v-else-if="getCoupon.discount_type == 'fixed_cart_discount'"
             class="text__bold text__gray"
           >
-            Discount
+            {{ $t("discount") }}
             <span class="red__text"
-              >[{{ getCoupon.discount_amount }}tk removed]</span
+              >[{{ getCoupon.discount_amount }} {{ $t("tk") }}
+              {{ $t("removed") }}]</span
             >
           </p>
           <p v-else class="text__bold text__gray">
-            Discount
+            {{ $t("discount") }}
             <span class="red__text"
-              >[{{ getCoupon.discount_amount }}tk removed from each item]</span
+              >[{{ getCoupon.discount_amount }} {{ $t("tk") }}
+              {{ $t("removed") }} {{ $t("from_each_item") }}]</span
             >
           </p>
           <p class="text__bold text__gray">
-            {{ discountAmount != null ? discountAmount : discount }} tk
+            {{ discountAmount != null ? discountAmount : discount }}
+            {{ $t("tk") }}
           </p>
         </div>
       </div>
 
       <div v-show="promoSubmitted == 'true'" class="d__flex  mb__10">
-        <p class="text__bold text__gray">Total</p>
+        <p class="text__bold text__gray">{{ $t("total") }}</p>
         <p class="text__bold text__gray">
-          {{ discountTotalPrice != null ? discountTotalPrice : newTotal }} tk
+          {{ discountTotalPrice != null ? discountTotalPrice : newTotal }}
+          {{ $t("tk") }}
         </p>
       </div>
-      <span class="text__sm">Delivery charge inside dhaka(Free)</span>
+      <!-- <span class="text__sm">Delivery charge inside dhaka(Free)</span> -->
       <v-btn
+        class="mt-3"
         @click="gotocheckout"
         text
         outlined
         color="teal lighten-1"
         small
         block
-        ><v-icon small left>mdi-arrow-right-thick</v-icon> check out</v-btn
+        ><v-icon small left>mdi-arrow-right-thick</v-icon>
+        {{ $t("check_out") }}</v-btn
       >
     </v-card>
   </div>
@@ -409,7 +416,8 @@ export default {
     gotocheckout() {
       if (this.cartItems.length > 0 && this.qntyArray.length > 0) {
         if (sessionStorage.getItem("myAuth") == "true") {
-          this.$router.push({ path: "/order" });
+          this.$router.push(this.localeLocation({ path: "/order" }));
+          // this.localePath("/order");
         } else {
           $nuxt.$emit("product-failed", "You need to login for buy this item");
           $nuxt.$emit("open-login");

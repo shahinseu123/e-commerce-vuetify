@@ -15,7 +15,7 @@
           v-model="form.review"
         ></v-textarea>
         <v-btn type="submit" color="teal" outlined block dark
-          ><v-icon left>mdi-star</v-icon> rate now</v-btn
+          ><v-icon left>mdi-star</v-icon> {{ $t("rate_now") }}</v-btn
         >
       </v-form>
     </v-card>

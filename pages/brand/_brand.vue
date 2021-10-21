@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" sm="4" md="4" lg="3" xl="3" class="padding_right_0">
         <v-card class="elevation-0">
-          <h3 class="py-3 text-center border_tt">product range</h3>
+          <h3 class="py-3 text-center border_tt">{{ $t("price_range") }}</h3>
           <div class="price__el px-5 mt-5">
             <span>Start: {{ range[0] }}</span
             ><span>End: {{ range[1] }}</span>
@@ -25,13 +25,19 @@
           </v-card-text>
         </v-card>
         <v-card class="elevation-0 mt-1">
-          <h3 class="py-3 mb-5 text-center border_tt">Shop by category</h3>
+          <h3 class="py-3 mb-5 text-center border_tt">
+            {{ $t("shop_by_cat") }}
+          </h3>
           <div v-for="cat in getAllCate" :key="cat.id" class="px-5">
             <v-checkbox
               @change="productByRange"
               class="margin__b_15"
               v-model="categories"
-              :label="cat.category_title"
+              :label="
+                $i18n.locale == 'en'
+                  ? cat.category_title
+                  : cat.category_title_bd
+              "
               color="teal"
               :value="cat.category_title"
               multiple
@@ -82,7 +88,9 @@
           <v-row v-else>
             <v-col>
               <v-card class="loading__card" elevation="0">
-                <h1 style="text-transform:uppercase">No product found!</h1>
+                <h1 style="text-transform:uppercase">
+                  {{ $t("no_product_found") }}!
+                </h1>
               </v-card>
             </v-col>
           </v-row>
@@ -105,7 +113,9 @@
           <v-row v-else>
             <v-col>
               <v-card class="loading__card" elevation="0">
-                <h1 style="text-transform: uppercase">No product found!</h1>
+                <h1 style="text-transform: uppercase">
+                  {{ $t("no_product_found") }}!
+                </h1>
               </v-card>
             </v-col>
           </v-row>

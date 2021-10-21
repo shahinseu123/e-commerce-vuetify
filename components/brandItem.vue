@@ -1,6 +1,6 @@
 <template>
   <div class="brand__item p_relative rounded-lg elevation-2">
-    <nuxt-link :to="`/brand/${brand.brand_title}`">
+    <nuxt-link :to="localePath(`/brand/${brand.brand_title}`)">
       <v-img
         class="rounded-lg"
         :lazy-src="
@@ -19,7 +19,7 @@
     </nuxt-link>
     <span class="title_abs"
       ><span class="text-caption rounded-pill">{{
-        brand.brand_title
+        $i18n.locale == "en" ? brand.brand_title : brand.brand_title_bd
       }}</span></span
     >
   </div>

@@ -516,7 +516,9 @@ export default {
     searchSuggession(query) {
       this.suggest = this.allRproduct
         .filter(item => {
-          return item.title.includes(query);
+          let title = item.title.toLowerCase()
+          let q = query.toLowerCase()
+          return title.includes(q);
         })
         .slice(0, 8);
     }
@@ -617,7 +619,7 @@ export default {
 }
 .cat__abs {
   position: absolute;
-  /* width: 135%; */
+  width: 230px;
   left: -14px;
   top: 35px;
   background: white;
@@ -646,6 +648,7 @@ a {
   position: absolute;
   right: -99%;
   top: 0;
+  width: 230px;
   background: white;
   padding: 0;
   display: none;
@@ -660,6 +663,7 @@ a {
   position: absolute;
   right: -87%;
   top: 0;
+  width: 230px;
   background: white;
   padding: 0;
   display: none;

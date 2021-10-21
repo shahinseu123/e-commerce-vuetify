@@ -15,7 +15,9 @@
       </div>
       <div class="w__full">
         <div class="flex__c">
-          <h5 class="text-uppercase gray">{{ product.title }}</h5>
+          <h5 class="text-uppercase gray">
+            {{ $i18n.locale == "en" ? product.title : product.title_bd }}
+          </h5>
 
           <div class="mt-1">
             <div class="counter_div mx-2">
@@ -36,10 +38,10 @@
           <div class="flex__c">
             <div class="d-flex">
               <span class="mr-2 sm_text teal__text"
-                >{{ product.productdata[0].sale_price }} TK</span
+                >{{ product.productdata[0].sale_price }} {{ $t("tk") }}</span
               >
               <span class=" sm_text line_through"
-                >{{ product.productdata[0].regular_price }} TK</span
+                >{{ product.productdata[0].regular_price }} {{ $t("tk") }}</span
               >
             </div>
             <div>
@@ -51,14 +53,15 @@
                 dark
                 depressed
               >
-                In Stock
+                {{ $t("in_stock") }}
               </v-btn>
             </div>
           </div>
           <div>
             <div class="flex_c_d">
               <span class="mt-1 teal__text text-uppercase sm_text"
-                >total price {{ qntyObj.total_price }} tk</span
+                >{{ $t("total_price") }} {{ qntyObj.total_price }}
+                {{ $t("tk") }}</span
               >
               <v-btn
                 class="float__r mr-2 "
