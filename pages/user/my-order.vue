@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row class="mb-1">
       <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="p__right">
         <user-sidebar class="margin__t" />
       </v-col>

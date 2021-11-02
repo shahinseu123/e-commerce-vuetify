@@ -501,11 +501,11 @@ export default {
   },
   methods: {
     gotoDashboard() {
-      this.$router.push({ path: "/user/dashboard" });
+      this.$router.push(this.localePath("/user/dashboard"));
     },
     selectItem(text) {
       this.searchText = text;
-      this.$router.push({ path: "/product/" + text });
+      this.$router.push(this.localePath("/product/" + text));
       setTimeout(() => {
         this.searchText = "";
       }, 2000);
@@ -516,8 +516,8 @@ export default {
     searchSuggession(query) {
       this.suggest = this.allRproduct
         .filter(item => {
-          let title = item.title.toLowerCase()
-          let q = query.toLowerCase()
+          let title = item.title.toLowerCase();
+          let q = query.toLowerCase();
           return title.includes(q);
         })
         .slice(0, 8);

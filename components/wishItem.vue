@@ -16,12 +16,22 @@
       </div>
       <div class="w__full">
         <div class="flex__c">
-          <h5 class="text-uppercase gray">{{ product.product.title }}</h5>
+          <h5 class="text-uppercase gray">
+            {{
+              $i18n.locale == "en"
+                ? product.product.title
+                : product.product.title_bd
+            }}
+          </h5>
         </div>
         <div class="mt-1">
           <span
             class="text__small"
-            v-html="product.product.description.substr(0, 130)"
+            v-html="
+              $i18n.locale == 'en'
+                ? product.product.description.substr(0, 130)
+                : product.product.description_bd.substr(0, 130)
+            "
           ></span>
           <div>
             <v-btn
@@ -33,7 +43,7 @@
               dark
               depressed
             >
-              In Stock
+              {{ $t("in_stock") }}
             </v-btn>
             <v-btn
               v-else
@@ -44,7 +54,7 @@
               dark
               depressed
             >
-              Out of stock
+              {{ $t("out_of_stock") }}
             </v-btn>
           </div>
         </div>

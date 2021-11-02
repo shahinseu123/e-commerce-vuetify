@@ -8,19 +8,19 @@
   >
     <div class="d__flex">
       <div class="">
-        <h1>{{ products.length }} Orders</h1>
+        <h1>{{ products.length }} {{ $t("order") }} {{ status }}</h1>
         <p>{{ products.status }}</p>
       </div>
       <div>
         <v-icon x-large>{{ icon }}</v-icon>
       </div>
     </div>
-    <v-card-actions>
-      <v-btn @click="goMyOrder" outlined text class="mt-2">
+    <!-- <v-card-actions>
+      <v-btn @click="goMyOrder" outlined text>
         more
         <v-icon small right>mdi-arrow-right</v-icon>
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 
@@ -39,6 +39,10 @@ export default {
     products: {
       type: Array,
       default: () => ({})
+    },
+    status: {
+      type: String,
+      default: ""
     }
   },
   methods: {

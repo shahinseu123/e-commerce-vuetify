@@ -36,8 +36,9 @@
         <heading-line :h_title="$t('product_for_you')" />
         <product-group :products="getNewProducts" />
         <services />
-        <!-- <heading-line :h_title="'OUR PARTNERS'" /> -->
-        <!-- <partner /> -->
+        <!-- <heading-line :h_title="$t('our_suppliers')" />
+
+        <supplier class="mb-10 container" /> -->
       </div>
     </div>
     <div v-else>
@@ -52,11 +53,11 @@
 
 <script>
 import BeforeFooter from "~/components/beforeFooter.vue";
-import Partner from "~/components/partner.vue";
+import supplier from "~/components/supplier.vue";
 import productGroup from "~/components/product-group.vue";
 import Services from "~/components/services.vue";
 export default {
-  components: { productGroup, BeforeFooter, Services, Partner },
+  components: { productGroup, BeforeFooter, Services, supplier },
   name: "Home",
   data() {
     return {};

@@ -186,6 +186,7 @@ export default {
             id: this.product[0].id,
             product_data_id: this.product[0].productdata[0].id,
             name: this.product[0].title,
+            name_bd: this.product[0].title_bd,
             qnty: this.qnty,
             salePrice: this.product[0].productdata[0].sale_price,
             total_price:
@@ -295,6 +296,7 @@ export default {
         id: this.product[0].id,
         product_data_id: this.product[0].productdata[0].id,
         name: this.product[0].title,
+        name_bd: this.product[0].title_bd,
         qnty: this.qnty,
         salePrice: this.product[0].productdata[0].sale_price,
         total_price:

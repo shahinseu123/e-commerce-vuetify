@@ -21,7 +21,7 @@ export const actions = {
                sessionStorage.removeItem("totalPrice")
                $nuxt.$emit("product-failed","Thanks for your order, we will contact you soon")
             //    $nuxt.$emit("my-custom-event")
-               this.$router.push({path: "/user/my-order"})
+               this.$router.push(this.$i18n.localePath("/user/my-order"))
            }
              
          } catch (error) {

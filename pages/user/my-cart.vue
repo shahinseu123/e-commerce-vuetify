@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row class="mb-1">
       <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="p__right">
         <user-sidebar class="margin__t" />
       </v-col>
@@ -18,7 +18,7 @@
         <div v-else class="margin__t">
           <v-card elevation="1">
             <div class="dis__flex height_f">
-              <h1 class="gray text-uppercase">Your cart is empty</h1>
+              <h1 class="gray text-uppercase">{{ $t("cart_empty") }}</h1>
             </div>
           </v-card>
         </div>

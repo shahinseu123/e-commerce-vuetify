@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="1" class="pa-5">
     <h3 class="text-uppercase gray pb-3">
-      Update User Info
+      {{ $t("update_user_info") }}
     </h3>
     <v-divider></v-divider>
     <div class="mt-4">
@@ -9,7 +9,7 @@
         <v-row>
           <v-col cols="12" sm="12" md="12" lg="4" xl="4">
             <v-text-field
-              label="Name*"
+              :label="$t('name')"
               :rules="nameRules"
               required
               v-model="name"
@@ -21,7 +21,7 @@
           </v-col>
           <v-col cols="12" sm="12" md="12" lg="4" xl="4">
             <v-text-field
-              label="Email*"
+              :label="$t('email')"
               :rules="emailRules"
               required
               v-model="email"
@@ -33,7 +33,7 @@
           </v-col>
           <v-col cols="12" sm="12" md="12" lg="4" xl="4">
             <v-text-field
-              label="Phone*"
+              :label="$t('phone')"
               :rules="phoneRules"
               required
               v-model="phone"
@@ -45,7 +45,7 @@
           </v-col>
           <v-col cols="12" md="12" lg="6" xl="6">
             <v-text-field
-              label="Street Address*"
+              :label="$t('street')"
               :rules="streetRules"
               required
               v-model="street"
@@ -56,7 +56,7 @@
             >
           </v-col>
           <v-col cols="12" md="12" lg="6" xl="6">
-            <v-text-field label="Appertment*" v-model="appertment">
+            <v-text-field :label="$t('apt')" v-model="appertment">
               <v-icon slot="append" color="teal">
                 mdi-map-marker
               </v-icon></v-text-field
@@ -64,7 +64,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <v-text-field
-              label="City*"
+              :label="$t('city')"
               :rules="cityRules"
               required
               v-model="city"
@@ -76,7 +76,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <v-text-field
-              label="State*"
+              :label="$t('state')"
               :rules="stateRules"
               required
               v-model="state"
@@ -87,7 +87,12 @@
             >
           </v-col>
           <v-col cols="12" md="4">
-            <v-text-field label="Zip*" :rules="zipRules" required v-model="zip">
+            <v-text-field
+              :label="$t('zip')"
+              :rules="zipRules"
+              required
+              v-model="zip"
+            >
               <v-icon slot="append" color="teal">
                 mdi-map-marker
               </v-icon></v-text-field
@@ -95,7 +100,8 @@
           </v-col>
           <div class="px-2 pb-2">
             <v-btn type="submit" outlined text color="teal"
-              ><v-icon left>mdi-account-convert</v-icon> update user</v-btn
+              ><v-icon left>mdi-account-convert</v-icon
+              >{{ $t("update") }}</v-btn
             >
           </div>
         </v-row>
@@ -177,7 +183,6 @@ export default {
         appertment: this.appertment
       });
     }
-    
   },
   mounted() {
     if (sessionStorage.getItem("myAuth") == "true") {

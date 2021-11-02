@@ -50,7 +50,7 @@ export default {
 #intro {
   height: auto;
   width: 100%;
-  background: teal;
+  background: lightseagreen;
 }
 .promodiv {
   display: flex;

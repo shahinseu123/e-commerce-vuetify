@@ -1,7 +1,7 @@
 <template>
-  <v-card elevation="1" class="pa-5 mt-3">
+  <v-card elevation="1" class="pa-5 mt-3 mb-3">
     <h3 class="text-uppercase gray pb-3">
-      Update Password
+      {{ $t("update_password") }}
     </h3>
     <v-divider></v-divider>
     <div class="mt-4">
@@ -9,7 +9,7 @@
         <v-row>
           <v-col cols="12">
             <v-text-field
-              label="Email*"
+              :label="$t('email')"
               :rules="emailRules"
               required
               v-model="email"
@@ -21,7 +21,7 @@
           </v-col>
           <v-col cols="12" sm="12" md="6" lg="6" xl="6">
             <v-text-field
-              label="Old Password*"
+              :label="$t('old_password')"
               :rules="passwordRules"
               required
               type="password"
@@ -34,7 +34,7 @@
           </v-col>
           <v-col cols="12" sm="12" md="6" lg="6" xl="6">
             <v-text-field
-              label="New Password*"
+              :label="$t('new_password')"
               :rules="passwordRules"
               required
               type="password"
@@ -48,7 +48,8 @@
 
           <div class="px-2 pb-2">
             <v-btn outlined type="submit" text color="teal"
-              ><v-icon left>mdi-lock-reset</v-icon> update password</v-btn
+              ><v-icon left>mdi-lock-reset</v-icon>
+              {{ $t("update_password") }}</v-btn
             >
           </div>
         </v-row>

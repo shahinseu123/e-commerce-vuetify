@@ -12,6 +12,7 @@
                 icon="mdi-cart-arrow-down"
                 :products="filterProcessingedOrder"
                 color="teal"
+                :status="$t('processing')"
               ></dash-card>
             </v-col>
 
@@ -20,6 +21,7 @@
                 icon="mdi-cart-check"
                 :products="filterCompletedOrder"
                 color="green"
+                :status="$t('completed')"
               ></dash-card>
             </v-col>
             <v-col>
@@ -27,6 +29,7 @@
                 icon="mdi-cart-remove"
                 :products="filterReturnededOrder"
                 color="red"
+                :status="$t('returned')"
               ></dash-card>
             </v-col>
           </v-row>

@@ -14,7 +14,7 @@
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> Dashboard </v-list-item-title>
+            <v-list-item-title> {{ $t("dashboard") }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="goOrders(1)">
@@ -22,7 +22,7 @@
             <v-icon>mdi-basket</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> My Order </v-list-item-title>
+            <v-list-item-title> {{ $t("my_order") }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="goCart(2)">
@@ -30,7 +30,7 @@
             <v-icon>mdi-cart</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> My Cart </v-list-item-title>
+            <v-list-item-title> {{ $t("my_cart") }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="goWishlist(3)">
@@ -38,7 +38,7 @@
             <v-icon>mdi-heart</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> My Wish List </v-list-item-title>
+            <v-list-item-title>{{ $t("my_wish") }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="goUpdateAccount(4)">
@@ -46,7 +46,7 @@
             <v-icon>mdi-account</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> Update Account </v-list-item-title>
+            <v-list-item-title> {{ $t("user_update") }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="gotoLogout">
@@ -54,7 +54,7 @@
             <v-icon color="red">mdi-logout-variant</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> Logout </v-list-item-title>
+            <v-list-item-title> {{ $t("logout") }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -87,29 +87,28 @@ export default {
     },
     goDashboard(index) {
       sessionStorage.setItem("userIndex", index);
-      this.$router.push({ path: "/user/dashboard" });
+      this.$router.push(this.localePath("/user/dashboard"));
     },
     goOrders(index) {
       sessionStorage.setItem("userIndex", index);
-      this.$router.push({ path: "/user/my-order" });
+      this.$router.push(this.localePath("/user/my-order"));
     },
     goOrders(index) {
       sessionStorage.setItem("userIndex", index);
-      this.$router.push({ path: "/user/my-order" });
+      this.$router.push(this.localePath("/user/my-order"));
     },
     goCart(index) {
       sessionStorage.setItem("userIndex", index);
-      this.$router.push({ path: "/user/my-cart" });
+      this.$router.push(this.localePath("/user/my-cart"));
     },
     goWishlist(index) {
       sessionStorage.setItem("userIndex", index);
-      this.$router.push({ path: "/user/my-wishlist" });
+      this.$router.push(this.localePath("/user/my-wishlist"));
     },
     goUpdateAccount(index) {
       sessionStorage.setItem("userIndex", index);
-      this.$router.push({ path: "/user/update-user" });
-    },
-    logout(index) {}
+      this.$router.push(this.localePath("/user/update-user"));
+    }
   },
   mounted() {
     this.selectedItem = parseInt(sessionStorage.getItem("userIndex"));

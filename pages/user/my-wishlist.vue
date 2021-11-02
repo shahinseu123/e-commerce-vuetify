@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row class="">
+    <v-row class="mb-1">
       <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="p__right">
         <user-sidebar class="margin__t" />
       </v-col>
@@ -13,7 +13,7 @@
         <div v-else>
           <div class="dis__flex">
             <h1 class="text-uppercase text__s gray">
-              No Favourite items available
+              {{ $t("favourate_empty") }}
             </h1>
           </div>
         </div>

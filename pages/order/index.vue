@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div v-if="authUser != null">
+    <div v-if="authUser != null" class="mb-4">
       <v-form @submit.prevent="orderNow">
         <v-row>
           <v-col cols="12" sm="6" md="6" lg="6" xl="6" class="right__p_0">
@@ -8,7 +8,7 @@
               <v-row>
                 <v-col cols="12">
                   <v-text-field
-                    label="Name*"
+                    :label="$t('name')"
                     :rules="nameRules"
                     required
                     v-model="name"
@@ -20,7 +20,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Email*"
+                    :label="$t('email')"
                     :rules="emailRules"
                     required
                     v-model="email"
@@ -32,7 +32,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="Phone*"
+                    :label="$t('phone')"
                     :rules="phoneRules"
                     required
                     v-model="phone"
@@ -44,7 +44,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    label="Street Address*"
+                    :label="$t('street')"
                     :rules="streetRules"
                     required
                     v-model="street"
@@ -55,7 +55,7 @@
                   >
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-text-field label="Appertment*" v-model="appertment">
+                  <v-text-field :label="$t('apt')" v-model="appertment">
                     <v-icon slot="append" color="teal">
                       mdi-map-marker
                     </v-icon></v-text-field
@@ -63,7 +63,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="City*"
+                    :label="$t('city')"
                     :rules="cityRules"
                     required
                     v-model="city"
@@ -75,7 +75,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="State*"
+                    :label="$t('state')"
                     :rules="stateRules"
                     required
                     v-model="state"
@@ -87,7 +87,7 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                    label="Zip*"
+                    :label="$t('zip')"
                     :rules="zipRules"
                     required
                     v-model="zip"
@@ -101,7 +101,7 @@
                   <v-textarea
                     outlined
                     name="input-7-4"
-                    label="Comment"
+                    :label="$t('comment')"
                     v-model="comment"
                   ></v-textarea>
                 </v-col>
@@ -111,45 +111,47 @@
           <v-col cols="12" sm="6" md="6" lg="6" xl="6" class="left__p_0">
             <v-card class="pa-5 mt-11" elevation="1">
               <h3 class="text-uppercase grey-text mb-3">
-                Product information
+                {{ $t("product_info") }}
               </h3>
               <div>
                 <table class="w__full">
                   <thead>
                     <tr>
                       <th class="text__left grey-text text-uppercase">
-                        Product
+                        {{ $t("product") }}
                       </th>
                       <th class="text__right grey-text text-uppercase">
-                        Information
+                        {{ $t("info") }}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="prod in getCheckOutProduct" :key="prod.id">
                       <td class="text__left grey-text text__sm">
-                        {{ prod.name }}
+                        {{ $i18n.locale == "en" ? prod.name : prod.name_bd }}
                       </td>
                       <td class="text__right grey-text text__sm">
-                        {{ prod.total_price }} TK
+                        {{ prod.total_price }} {{ $t("tk") }}
                       </td>
                     </tr>
                     <tr v-show="promoSubmitted == 'true'">
-                      <td class="text__left grey-text text__sm">Discount</td>
+                      <td class="text__left grey-text text__sm">
+                        {{ $t("discount") }}
+                      </td>
                       <td class="text__right grey-text text__sm">
-                        {{ discount_amount }} TK
+                        {{ discount_amount }} {{ $t("tk") }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text__left grey-text text__sm"></td>
                       <td class="text__right grey-text text__md pt-3">
-                        Total
+                        {{ $t("total") }}
                         {{
                           promoSubmitted == "true"
                             ? discountTotalPrice
                             : totalPrice
                         }}
-                        TK
+                        {{ $t("tk") }}
                       </td>
                     </tr>
                   </tbody>
@@ -158,7 +160,7 @@
             </v-card>
             <v-card class="pa-5 mt-3" elevation="1">
               <h3 class="text-uppercase grey-text mb-3">
-                summery
+                {{ $t("summery") }}
               </h3>
               <div>
                 <table class="w__full">
@@ -166,59 +168,59 @@
                     <tr>
                       <td class="text__left grey-text text__sm"></td>
                       <td class="text__left grey-text text__md">
-                        Amount
+                        {{ $t("amount") }}
                       </td>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td class="text__left grey-text text__sm">Product</td>
                       <td class="text__left grey-text text__sm">
-                        Price:
+                        {{ $t("product") }}
+                      </td>
+                      <td class="text__left grey-text text__sm">
+                        {{ $t("price") }}:
                         {{
                           promoSubmitted == "true"
                             ? discountTotalPrice
                             : totalPrice
                         }}
-                        TK
+                        {{ $t("tk") }}
                       </td>
                     </tr>
                     <tr>
-                      <td class="text__left grey-text text__sm">Shipping</td>
+                      <td class="text__left grey-text text__sm">
+                        {{ $t("shipping") }}
+                      </td>
                       <td class="text__left grey-text text__sm">
                         <v-radio-group v-model="delivery_charge">
                           <v-radio
-                            :label="
-                              'Inside Dhaka home delivery - 50tk - 24/48H'
-                            "
+                            :label="$t('inside_dhaka_home_de')"
                             :value="50"
                           ></v-radio>
                           <v-radio
-                            :label="
-                              'Outside Dhaka home delivery - 150tk - 24/48H'
-                            "
+                            :label="$t('outside_dhaka_home_de')"
                             :value="150"
                           ></v-radio>
                           <v-radio
-                            :label="
-                              'Outside Dhaka courier delivery - 100tk - 24/48H'
-                            "
+                            :label="$t('outside_dhaka_courier_de')"
                             :value="100"
                           ></v-radio>
                         </v-radio-group>
                       </td>
                     </tr>
                     <tr>
-                      <td class="text__left grey-text text__md">Total</td>
                       <td class="text__left grey-text text__md">
-                        {{ makeTotal }} TK
+                        {{ $t("total") }}
+                      </td>
+                      <td class="text__left grey-text text__md">
+                        {{ makeTotal }} {{ $t("tk") }}
                       </td>
                     </tr>
                   </tbody>
                 </table>
                 <v-checkbox
                   v-model="termsCondition"
-                  label="Agree to the terms and condition and privecy policy"
+                  :label="$t('check_privecy')"
                   color="teal"
                   value="true"
                 ></v-checkbox>
@@ -231,13 +233,12 @@
                   class="mb-2"
                   text
                   color="teal lighten-2"
-                  ><v-icon left>mdi-cart-arrow-down</v-icon> order now</v-btn
+                  ><v-icon left>mdi-cart-arrow-down</v-icon>
+                  {{ $t("order_now") }}</v-btn
                 >
               </div>
               <p class="text__sm">
-                Your personal data will be used to process your order, support
-                your experience throughout this website, and for other purposes
-                described in our privacy policy.
+                {{ $t("privecy_on_order") }}
               </p>
             </v-card>
           </v-col>
