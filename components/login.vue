@@ -39,6 +39,11 @@
             ><v-btn @click="showRegister" small color="teal darken-2" text
               >click here</v-btn
             >
+            <br />
+            <span>Forgot password?</span>
+            <v-btn @click="showpasswordReset" small color="teal darken-2" text
+              >reset password</v-btn
+            >
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -71,6 +76,10 @@ export default {
     passwordRules: [v => !!v || "Password is required"]
   }),
   methods: {
+    showpasswordReset() {
+      $nuxt.$emit("reset-modal-open");
+      this.dialog = false;
+    },
     showRegister() {
       this.dialog = false;
       $nuxt.$emit("show-register");

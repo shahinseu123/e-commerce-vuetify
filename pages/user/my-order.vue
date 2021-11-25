@@ -29,15 +29,21 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Shahin</td>
-                <td>shahin@gmail.cpm</td>
-                <td>234523452</td>
+            <tbody v-if="authUser !== null && authUser.order.length > 0">
+              <tr v-for="order in authUser.order" :key="order.id">
+                <td>{{ order.name }}</td>
+                <td>{{ order.email }}</td>
+                <td>{{ order.phone }}</td>
                 <td>345</td>
                 <td><v-btn color="teal" dark small>processing</v-btn></td>
                 <td>
-                  <v-btn fab x-small color="teal" dark elevation="1"
+                  <v-btn
+                    @click="openBottomSheet(order.id)"
+                    fab
+                    x-small
+                    color="teal"
+                    dark
+                    elevation="1"
                     ><v-icon small>mdi-eye-outline</v-icon></v-btn
                   >
                 </td>
@@ -47,13 +53,21 @@
         </v-simple-table>
       </v-col>
     </v-row>
+    <bottm-sheet />
   </v-container>
 </template>
 
 <script>
+import bottmSheet from "~/components/bottmSheet.vue";
 export default {
+  components: { bottmSheet },
   name: "MyOrder",
   middleware: ["isAuth"],
+  data() {
+    return {
+      authUser: null
+    };
+  },
   asyncData({ store }) {
     if (store.state.product.products.length === 0) {
       store.dispatch("brand/get_all_brands");
@@ -62,6 +76,16 @@ export default {
       store.dispatch("product/get_sorted_product");
       store.dispatch("wish/get_wish");
     }
+  },
+  methods: {
+    openBottomSheet(id) {
+      $nuxt.$emit("open-sheet", id);
+    }
+  },
+  mounted() {
+    // if (sessionStorage.getItem("authUser") !== undefined) {
+    this.authUser = JSON.parse(sessionStorage.getItem("authUser"));
+    // }
   }
 };
 </script>

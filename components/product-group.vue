@@ -32,12 +32,7 @@ export default {
   },
   data: () => ({
     model: null
-  }),
-  computed: {
-    getSortedProduct() {
-      return this.$store.state.product.sorted_products;
-    }
-  }
+  })
 };
 </script>
 

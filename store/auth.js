@@ -56,8 +56,66 @@ export const actions = {
             $nuxt.$emit("product-failed","Paasword update failed, please try again")
         }
             
+    },
+
+    async send_code({commit}, payload) {
+        try {
+            const res = await fetch(`http://localhost:8000/api/auth/reset/sendcode`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(payload)
+                })
+            $nuxt.$emit("product-failed","Code sending")
+            if (res.status == 200) {
+                $nuxt.$emit('hide-reset-modal')
+                $nuxt.$emit('show-confirmCode-modal')
+                $nuxt.$emit("product-failed","Code sent to your email")
+            }  
+        } catch (error) {
+            $nuxt.$emit("product-failed","Code sending failed")
+        }
+    },
+    async confirm_code({commit}, payload) {
+        try {
+            const res = await fetch(`http://localhost:8000/api/auth/reset/confirmcode`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(payload)
+                })
+            $nuxt.$emit("product-failed","Code confirming")
+            if (res.status == 200) {
+                let data = await res.json()
+                if (data.message == 'failed') {
+                    $nuxt.$emit("product-failed","Code confirmation failed")
+                } else {
+                    $nuxt.$emit('hide-confirmCode-modal')
+                    $nuxt.$emit('show-newpassword-modal', data.message)
+                    $nuxt.$emit("product-failed","Code confirmed")
+                }
+            }  
+        } catch (error) {
+            $nuxt.$emit("product-failed","Code confirming failed")
+        }
+    },
+    async update_password({commit}, payload) {
+        try {
+             const res = await fetch(`http://localhost:8000/api/auth/reset/set-new-pass`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(payload)
+                })
+            
+            if (res.status == 200) {
+                let data = await res.json()
+                    $nuxt.$emit('hide-newpassword-modal')
+                    $nuxt.$emit('show-login')
+                    $nuxt.$emit("product-failed","Password successfully updated")   
+            }  
+        } catch (error) {
+            console.log(error)
+        }
     }
-
-    
-
 }

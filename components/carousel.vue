@@ -1,9 +1,9 @@
 <template>
   <v-carousel hide-delimiters>
     <v-carousel-item
-      v-for="(item, i) in items"
+      v-for="(item, i) in getCarousel"
       :key="i"
-      :src="item.src"
+      :src="'http://localhost:8000/uploads/media/' + item.slider_image"
       reverse-transition="fade-transition"
       transition="fade-transition"
     ></v-carousel-item>
@@ -13,24 +13,15 @@
 export default {
   name: "Carousel",
   data() {
-    return {
-      items: [
-        {
-          id: 1,
-          src:
-            "https://www.chefkunalkapur.com/wp-content/uploads/2021/06/Rasmalai-3-scaled.jpg?v=1625130326"
-        },
-        {
-          id: 2,
-          src: "https://i.ytimg.com/vi/I_hKHcXo1EA/maxresdefault.jpg"
-        },
-        {
-          id: 3,
-          src:
-            "https://achalafood.com/wp-content/uploads/2018/09/Rasmalai-Recipe-main-photo.jpg"
-        }
-      ]
-    };
+    return {};
+  },
+  computed: {
+    getCarousel() {
+      return this.$store.state.slider.slider;
+    }
+  },
+  mounted() {
+    this.$store.dispatch("slider/get_all_slider");
   }
 };
 </script>

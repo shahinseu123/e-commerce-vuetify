@@ -1,8 +1,7 @@
 <template>
   <v-container fluid>
     <div v-if="$store.state.product.products.length > 0">
-     
-      <div v-if=" getSelectedProduct[0].type == 'simple'">
+      <div v-if="getSelectedProduct[0].type == 'simple'">
         <simple-product :product="getSelectedProduct" />
       </div>
       <div v-else>
@@ -80,6 +79,11 @@ export default {
       store.dispatch("product/get_all_product");
       store.dispatch("product/get_sorted_product");
     }
+  },
+  mounted() {
+    this.$store.dispatch("product/count_view", {
+      productName: this.$route.params.product
+    });
   }
 };
 </script>

@@ -279,6 +279,9 @@
     </v-main>
     <login />
     <register />
+    <reset-password />
+    <code-confirm-modal />
+    <set-new-password />
     <v-navigation-drawer
       v-model="categoryDrawer"
       :right="right"
@@ -441,10 +444,12 @@
 </template>
 // https://materialdesignicons.com/
 <script>
+import CodeConfirmModal from "~/components/codeConfirmModal.vue";
 import login from "~/components/login.vue";
+import SetNewPassword from "~/components/setNewPassword.vue";
 export default {
   name: "Default",
-  components: { login },
+  components: { login, CodeConfirmModal, SetNewPassword },
   data: () => ({
     icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
     numberOfCartItems: 0,
@@ -529,6 +534,9 @@ export default {
     }
   },
   mounted() {
+    this.$nuxt.$on("make-cart-zero", () => {
+      this.numberOfCartItems = 0;
+    });
     // console.log(this.$i18n.locale);
     this.$nuxt.$on("login-success", () => {
       this.auth = sessionStorage.getItem("myAuth");

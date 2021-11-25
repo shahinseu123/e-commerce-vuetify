@@ -1,7 +1,8 @@
 export const state = () => ({
   products: [],
   filtered_products: [],
-  sorted_products: []
+  sorted_products: [],
+  top_view_products: []
 })
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
   },
   SET_SORTED_PRODUCTS(state, payload) {
     state.sorted_products = payload
+  },
+  SET_TOP_VIEWED_PRODUCT(state, payload) {
+    state.top_view_products = payload
   },
 
 }
@@ -36,6 +40,21 @@ export const actions = {
            console.log(error)
        }
    },
+   async count_view({commit}, payload) {
+       try {
+         const res = await this.$axios.$get('http://localhost:8000/api/product/count_product/'+payload.productName);
+       } catch (error) {
+         $nuxt.$emit('product-failed', 'Product count failed')   
+       }
+   },
+   async getTopViewProduct({commit}) {
+       try {
+          const res = await this.$axios.$get('http://localhost:8000/api/product/top-viewed')
+          commit('SET_TOP_VIEWED_PRODUCT', res)
+       } catch (error) {
+          $nuxt.$emit('product-failed', 'Top viewed product fething failed')  
+       }
+   }
 
    
 };

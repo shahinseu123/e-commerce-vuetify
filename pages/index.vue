@@ -8,33 +8,49 @@
         <heading-line :h_title="$t('popular_brand')" />
         <brand />
         <v-parallax
+          v-if="getParalax.length > 0"
           height="300"
-          src="https://www.chefkunalkapur.com/wp-content/uploads/2021/06/Rasmalai-3-scaled.jpg?v=1625130326"
+          :src="
+            'http://localhost:8000/uploads/media/' +
+              getParalax[0].parallax_image
+          "
         >
         </v-parallax>
         <heading-line :h_title="$t('popular_category')" />
         <category />
         <v-parallax
+          v-if="getParalax.length > 1"
           height="300"
-          src="https://www.chefkunalkapur.com/wp-content/uploads/2021/06/Rasmalai-3-scaled.jpg?v=1625130326"
+          :src="
+            'http://localhost:8000/uploads/media/' +
+              getParalax[1].parallax_image
+          "
         >
         </v-parallax>
         <heading-line :h_title="$t('top_selling_prod')" />
-        <product-group :products="getFeatureProducts" />
+        <product-group :products="getSortedProduct" />
         <v-parallax
+          v-if="getParalax.length > 2"
           height="300"
-          src="https://www.chefkunalkapur.com/wp-content/uploads/2021/06/Rasmalai-3-scaled.jpg?v=1625130326"
+          :src="
+            'http://localhost:8000/uploads/media/' +
+              getParalax[2].parallax_image
+          "
         >
         </v-parallax>
         <heading-line :h_title="$t('feature_prod')" />
         <product-group :products="getFeatureProducts" />
         <v-parallax
+          v-if="getParalax.length > 3"
           height="300"
-          src="https://www.chefkunalkapur.com/wp-content/uploads/2021/06/Rasmalai-3-scaled.jpg?v=1625130326"
+          :src="
+            'http://localhost:8000/uploads/media/' +
+              getParalax[3].parallax_image
+          "
         >
         </v-parallax>
         <heading-line :h_title="$t('product_for_you')" />
-        <product-group :products="getNewProducts" />
+        <product-group :products="mostViewedProduct" />
         <services />
         <!-- <heading-line :h_title="$t('our_suppliers')" />
 
@@ -63,11 +79,20 @@ export default {
     return {};
   },
   computed: {
+    getParalax() {
+      return this.$store.state.paralax.paralax;
+    },
     getNewProducts() {
       return this.$store.state.product.products.slice(0, 40);
     },
     getFeatureProducts() {
       return this.$store.state.product.products.slice(0, 40);
+    },
+    getSortedProduct() {
+      return this.$store.state.product.sorted_products;
+    },
+    mostViewedProduct() {
+      return this.$store.state.product.top_view_products;
     },
     getCoupon() {
       return this.$store.state.coupon.coupon;
@@ -81,8 +106,10 @@ export default {
       store.dispatch("category/get_all_category");
       store.dispatch("product/get_all_product");
       store.dispatch("product/get_sorted_product");
+      store.dispatch("product/getTopViewProduct");
       store.dispatch("coupon/get_all_coupon");
     }
+    store.dispatch("paralax/get_all_paralax");
   },
   mounted() {}
 };
