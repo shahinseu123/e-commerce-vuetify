@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <div v-if="$store.state.product.products.length > 0">
+    <div v-if="$store.state.product.products.length > 0" class="mt-res">
       <div v-if="getSelectedProduct[0].type == 'simple'">
         <simple-product :product="getSelectedProduct" />
       </div>
@@ -102,5 +102,15 @@ export default {
 }
 .gray {
   color: gray;
+}
+@media only screen and (max-width: 959px) {
+  .mt-res {
+    margin-top: -40px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
 }
 </style>

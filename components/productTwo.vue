@@ -88,6 +88,7 @@ export default {
           name_bd: this.product.title_bd,
           qnty: this.qnty,
           salePrice: this.product.productdata[0].sale_price,
+          unitPrice: this.product.productdata[0].unit_amount,
           total_price:
             parseFloat(this.product.productdata[0].sale_price) * this.qnty
         };
@@ -193,6 +194,7 @@ export default {
         name_bd: this.product.title_bd,
         qnty: this.qnty,
         salePrice: this.product.productdata[0].sale_price,
+        unitPrice: this.product.productdata[0].unit_amount,
         total_price:
           parseFloat(this.product.productdata[0].sale_price) * this.qnty
       };

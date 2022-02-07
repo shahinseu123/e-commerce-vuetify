@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="mt-res">
     <v-row>
       <v-col class="p__right" cols="12" sm="6" md="4" lg="3" xl="2">
         <user-sidebar class="margin__t" />
@@ -91,5 +91,15 @@ export default {
 
 .height_f {
   height: 100vh;
+}
+@media only screen and (max-width: 959px) {
+  .mt-res {
+    margin-top: -42px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
 }
 </style>

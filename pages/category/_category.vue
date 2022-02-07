@@ -282,20 +282,17 @@ export default {
   font-weight: 500;
 }
 
-/* @media only screen and (min-width: 600px) {
+@media only screen and (max-width: 959px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
+}
+@media only screen and (min-width: 600px) {
   .padding_right_0 {
     padding-right: 0;
   }
   .padding_left_5 {
     padding-left: 5px;
   }
-  .mt__10 {
-    margin-top: 0 !important;
-  }
 }
-@media only screen and (min-width: 959px) {
-  .mt__10 {
-    margin-top: 0 !important;
-  }
-} */
 </style>

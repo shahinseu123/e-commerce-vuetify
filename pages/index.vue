@@ -4,6 +4,7 @@
       <carousel />
       <!-- <h1>{{ $t("welcome") }}</h1> -->
       <introduction :coupon="getCoupon" />
+
       <div>
         <heading-line :h_title="$t('popular_brand')" />
         <brand />
@@ -77,6 +78,11 @@ export default {
   name: "Home",
   data() {
     return {};
+  },
+  methods: {
+    test() {
+      this.$router.push(this.$i18n.setLocal("/user/my-order"));
+    }
   },
   computed: {
     getParalax() {

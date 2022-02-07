@@ -42,7 +42,7 @@
         </div>
       </v-card>
     </div>
-    <v-card elevation="1" class="mt-2 pa-2">
+    <v-card v-if="cartItems.length > 0" elevation="1" class="mt-2 pa-2">
       <h3 class="py-2  teal__text text-uppercase">
         {{ $t("total") }}
       </h3>
@@ -115,6 +115,7 @@ export default {
   components: { cartItem },
   name: "Cart",
   data: () => ({
+    renderComponent: true,
     rules: {
       name: [val => (val || "").length > 0]
     },
@@ -464,6 +465,8 @@ export default {
     if (sessionStorage.getItem("qntyArray") != undefined) {
       this.qntyArray = JSON.parse(sessionStorage.getItem("qntyArray"));
     }
+    //will working here.
+    // this.$nuxt.$on("make-cart-zero", () => {});
   }
 };
 </script>

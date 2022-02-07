@@ -154,8 +154,9 @@ export default {
           update_user_info: 'UPDATE USER INFO',
           update_password: 'Update password',
           old_password: 'Old password',
-          new_password: 'নতুন পাসওয়ার্ড',
-          update: 'update user'
+          new_password: 'New password',
+          update: 'update user',
+          tax: 'Tax'
           
         },
         bn: {
@@ -258,7 +259,8 @@ export default {
           update_password: 'পাসওয়ার্ড আপডেট করুন',
           old_password: 'পুরানো পাসওয়ার্ড',
           new_password: 'নতুন পাসওয়ার্ড',
-          update: 'আপডেট'
+          update: 'আপডেট',
+          tax: 'ট্যাক্স'
         },
        
       }

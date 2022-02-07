@@ -56,7 +56,7 @@
             >
           </v-col>
           <v-col cols="12" md="12" lg="6" xl="6">
-            <v-text-field :label="$t('apt')" v-model="appertment">
+            <v-text-field :label="$t('apt')" v-model="apt">
               <v-icon slot="append" color="teal">
                 mdi-map-marker
               </v-icon></v-text-field
@@ -119,7 +119,7 @@ export default {
     email: null,
     phone: null,
     city: null,
-    appertment: null,
+    apt: null,
     state: null,
     zip: null,
     comment: null,
@@ -152,6 +152,7 @@ export default {
         this.street == null ||
         this.state == null ||
         this.city == null ||
+        this.apt == null ||
         this.zip == null
       ) {
         $nuxt.$emit("You need to fill required fields");
@@ -166,6 +167,7 @@ export default {
       this.street = this.authUser.street;
       this.city = this.authUser.city;
       this.zip = this.authUser.zip;
+      this.apt = this.authUser.apt;
       if (this.authUser.appertment != null) {
         this.appertment = this.authUser.appertment;
       }
@@ -179,6 +181,7 @@ export default {
         street: this.street,
         city: this.city,
         zip: this.zip,
+        apt: this.apt,
         state: this.state,
         appertment: this.appertment
       });

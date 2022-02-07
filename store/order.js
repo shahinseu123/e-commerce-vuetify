@@ -7,7 +7,7 @@ export const mutations = {
 }
 
 export const actions = {
-     async create_an_order({commit}, payload) {
+     async create_an_order({commit}, payload, app) {
          try {
             let res = await fetch("http://localhost:8000/api/auth/order", {
             method: "POST",
@@ -19,13 +19,17 @@ export const actions = {
                sessionStorage.removeItem("cartProduct")
                sessionStorage.removeItem("qntyArray")
                sessionStorage.removeItem("totalPrice")
+               sessionStorage.removeItem("promoSubmitted")
+               sessionStorage.removeItem("discountTotalPrice")
+               sessionStorage.removeItem("discountAmount")
                $nuxt.$emit('make-cart-zero')
                $nuxt.$emit("product-failed","Thanks for your order, we will contact you soon")
-               this.$router.push(this.$i18n.localePath("/user/my-order"))
+               this.$router.push(this.localeLocation({ path: "/user/my-order" }));
+               // dispatch("auth/get_auth_user");
+               // this.dispatch('auth/get_auth_user', null, {root:true})
            }
-             
-         } catch (error) {
-             console.log(error)
-         }
+        } catch (error) {
+            console.log(error)
+        }
      }
 }

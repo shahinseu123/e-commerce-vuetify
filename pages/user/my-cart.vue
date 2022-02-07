@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="mt-res">
     <v-row class="mb-1">
       <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="p__right">
         <user-sidebar class="margin__t" />
@@ -97,5 +97,15 @@ export default {
 .gray {
   color: gray;
   font-size: 40px;
+}
+@media only screen and (max-width: 959px) {
+  .mt-res {
+    margin-top: -42px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
 }
 </style>

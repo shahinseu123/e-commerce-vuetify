@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="mt-res">
     <v-row class="mb-1">
       <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="p__right">
         <user-sidebar class="margin__t" />
@@ -35,7 +35,25 @@
                 <td>{{ order.email }}</td>
                 <td>{{ order.phone }}</td>
                 <td>345</td>
-                <td><v-btn color="teal" dark small>processing</v-btn></td>
+                <td>
+                  <v-btn
+                    v-if="order.status == 'Processing'"
+                    color="teal"
+                    dark
+                    small
+                    >{{ order.status }}</v-btn
+                  >
+                  <v-btn
+                    v-else-if="order.status == 'Delivered'"
+                    color="green"
+                    dark
+                    small
+                    >{{ order.status }}</v-btn
+                  >
+                  <v-btn v-else color="red" dark small>{{
+                    order.status
+                  }}</v-btn>
+                </td>
                 <td>
                   <v-btn
                     @click="openBottomSheet(order.id)"
@@ -86,6 +104,7 @@ export default {
     // if (sessionStorage.getItem("authUser") !== undefined) {
     this.authUser = JSON.parse(sessionStorage.getItem("authUser"));
     // }
+    this.$store.dispatch("auth/get_auth_user");
   }
 };
 </script>
@@ -103,5 +122,15 @@ export default {
 
 .height_f {
   height: 80vh;
+}
+@media only screen and (max-width: 959px) {
+  .mt-res {
+    margin-top: -42px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
 }
 </style>

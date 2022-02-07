@@ -214,7 +214,7 @@
         </span>
       </v-btn>
 
-      <div class="d-none d-sm-none d-md-flex ml__18">
+      <div class="d-none d-sm-none d-md-flex ml__18 ">
         <nuxt-link :to="localePath('/')"
           ><v-btn text small>{{ $t("home") }}</v-btn></nuxt-link
         >
@@ -610,6 +610,11 @@ export default {
   background: white;
   height: auto;
   z-index: 9;
+}
+.shad {
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
 }
 .icon__abs {
   position: absolute;

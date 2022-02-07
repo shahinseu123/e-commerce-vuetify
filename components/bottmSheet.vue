@@ -80,7 +80,19 @@
               <div class="mt-2">
                 <p class="mp_0">
                   SUB TOTAL
-                  <span class="">{{ myOrder[0].product_total }} TK</span>
+                  <span class=""
+                    >{{
+                      myOrder[0].discount_amount == 0
+                        ? myOrder[0].product_total -
+                          myOrder[0].shipping_charge -
+                          myOrder[0].tax_amount
+                        : myOrder[0].product_total -
+                          myOrder[0].shipping_charge -
+                          myOrder[0].tax_amount +
+                          myOrder[0].discount_amount
+                    }}
+                    TK</span
+                  >
                 </p>
                 <p class="mp_0">
                   TAX <span class="k">{{ myOrder[0].tax_amount }} TK</span>
@@ -157,6 +169,9 @@ export default {
       }
     ]
   }),
+  filters: {
+    capitalize: function(value) {}
+  },
   mounted() {
     this.$nuxt.$on("open-sheet", id => {
       this.sheet = true;

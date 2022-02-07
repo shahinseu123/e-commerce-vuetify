@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div v-if="authUser != null" class="mb-4">
+    <div v-if="authUser != null" class="mb-4 mt-res">
       <v-form @submit.prevent="orderNow">
         <v-row>
           <v-col cols="12" sm="6" md="6" lg="6" xl="6" class="right__p_0">
@@ -55,7 +55,7 @@
                   >
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-text-field :label="$t('apt')" v-model="appertment">
+                  <v-text-field :label="$t('apt')" v-model="apt">
                     <v-icon slot="append" color="teal">
                       mdi-map-marker
                     </v-icon></v-text-field
@@ -189,6 +189,14 @@
                     </tr>
                     <tr>
                       <td class="text__left grey-text text__sm">
+                        {{ $t("tax") }}:
+                      </td>
+                      <td class="text__left grey-text text__sm">
+                        {{ calculateTax }} {{ $t("tk") }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text__left grey-text text__sm">
                         {{ $t("shipping") }}
                       </td>
                       <td class="text__left grey-text text__sm">
@@ -266,7 +274,7 @@ export default {
     email: null,
     phone: null,
     city: null,
-    appertment: null,
+    apt: null,
     state: null,
     zip: null,
     comment: null,
@@ -296,7 +304,8 @@ export default {
     authUser: null,
     promoSubmitted: "false",
     discountTotalPrice: 0,
-    discount_amount: 0
+    discount_amount: 0,
+    tax: 0
   }),
   methods: {
     orderNow() {
@@ -319,6 +328,7 @@ export default {
           street: this.street,
           city: this.city,
           state: this.state,
+          apt: this.apt,
           zip: this.zip,
           quantity: cartQnty,
 
@@ -326,8 +336,8 @@ export default {
           shipping_charge: this.delivery_charge,
           // charge
           product_total: this.makeTotal,
-          tax: 0,
-          tax_amount: 0,
+          tax: this.tax,
+          tax_amount: this.calculateTax,
           other_cost: 0,
           discount: 0,
           discount_amount: this.discount_amount,
@@ -356,12 +366,19 @@ export default {
         this.city = this.authUser.city;
         this.state = this.authUser.state;
         this.zip = this.authUser.zip;
+        this.apt = this.authUser.apt;
       }
     }
   },
+
   computed: {
     getCheckOutProduct() {
       return JSON.parse(sessionStorage.getItem("qntyArray"));
+    },
+    calculateTax() {
+      let tax = 0;
+      tax = (15 * this.totalPrice) / 100;
+      return tax;
     },
     makeTotal() {
       return (
@@ -369,7 +386,9 @@ export default {
           this.promoSubmitted == "true"
             ? this.discountTotalPrice
             : this.totalPrice
-        ) + parseFloat(this.delivery_charge)
+        ) +
+        parseFloat(this.delivery_charge) +
+        this.calculateTax
       );
     }
   },
@@ -386,7 +405,8 @@ export default {
     this.discount_amount = sessionStorage.getItem("discountAmount");
     this.discountTotalPrice = sessionStorage.getItem("discountTotalPrice");
     if (this.getCheckOutProduct == null) {
-      this.$router.push({ path: "/" });
+      // this.$router.push({ path: "/" });
+      this.$router.push(this.$i18n.localePath({ path: "/" }));
       $nuxt.$emit("product-failed", "Please add few items in cart");
     }
     setTimeout(() => {
@@ -431,5 +451,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+@media only screen and (max-width: 959px) {
+  .mt-res {
+    margin-top: -55px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .mt__10 {
+    margin-top: 0 !important;
+  }
 }
 </style>
