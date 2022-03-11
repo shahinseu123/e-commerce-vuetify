@@ -105,6 +105,16 @@ export default {
     this.authUser = JSON.parse(sessionStorage.getItem("authUser"));
     // }
     this.$store.dispatch("auth/get_auth_user");
+    // this.$nuxt.$on("get-my-order", () => {
+    //   // this.$store.dispatch("auth/get_auth_user");
+    //   setTimeout(() => {
+    //     this.authUser = JSON.parse(sessionStorage.getItem("authUser"));
+    //     console.log(this.authUser);
+    //   }, 2000);
+    // });
+    this.$nuxt.$on("set-auth", () => {
+      this.authUser = JSON.parse(sessionStorage.getItem("authUser"));
+    });
   }
 };
 </script>

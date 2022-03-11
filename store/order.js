@@ -23,6 +23,7 @@ export const actions = {
                sessionStorage.removeItem("discountTotalPrice")
                sessionStorage.removeItem("discountAmount")
                $nuxt.$emit('make-cart-zero')
+               $nuxt.$emit('get-my-order')
                $nuxt.$emit("product-failed","Thanks for your order, we will contact you soon")
                this.$router.push(this.localeLocation({ path: "/user/my-order" }));
                // dispatch("auth/get_auth_user");

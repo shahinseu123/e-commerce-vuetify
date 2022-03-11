@@ -131,6 +131,7 @@ export default {
     discountTotalPrice: null,
     discountAmount: null
   }),
+
   computed: {
     getCoupon() {
       return this.$store.state.coupon.coupon;
@@ -466,7 +467,9 @@ export default {
       this.qntyArray = JSON.parse(sessionStorage.getItem("qntyArray"));
     }
     //will working here.
-    // this.$nuxt.$on("make-cart-zero", () => {});
+    this.$nuxt.$on("make-cart-zero", () => {
+      this.cartItems = [];
+    });
   }
 };
 </script>

@@ -116,6 +116,7 @@ export default {
       store.dispatch("coupon/get_all_coupon");
     }
     store.dispatch("paralax/get_all_paralax");
+    store.dispatch("web_setting/get_all_settings");
   },
   mounted() {}
 };

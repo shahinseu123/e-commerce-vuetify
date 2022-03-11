@@ -25,7 +25,14 @@
         @click.stop="drawer = !drawer"
         class="d-flex d-sm-flex d-md-none"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title class="pl-0">BD DESSERT</v-toolbar-title>
+      <v-toolbar-title class="pl-0"
+        ><v-img
+          v-if="getWebSet[10] !== undefined"
+          width="80"
+          class="mt-10 bg-white"
+          :src="`http://localhost:8000/uploads/media/${getWebSet[10].value}`"
+        ></v-img
+      ></v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="w_100 input__rel d-none d-sm-none d-md-flex">
         <input
@@ -502,6 +509,9 @@ export default {
     },
     getCategory() {
       return this.$store.state.category.categories;
+    },
+    getWebSet() {
+      return this.$store.state.web_setting.web_settings;
     }
   },
   methods: {
@@ -570,10 +580,16 @@ export default {
 </script>
 
 <style scoped>
+.nuxt-link-exact-active {
+  background: #ebf4f3;
+}
 .v-snack__wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
+}
+.bg-white {
+  background: white;
 }
 .gray_c {
   color: #e9ebec;

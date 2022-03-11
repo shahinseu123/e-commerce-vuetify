@@ -13,9 +13,8 @@ export const actions = {
         try {
             const res =  await this.$axios.$get("http://localhost:8000/api/auth/user", {withCredentials: true});
             commit('SET_AUTH_USER', res)
-            if (res) {
-                $nuxt.$emit('set-auth')
-
+            if (res) {      
+                    $nuxt.$emit('set-auth')
             }
         } catch (error) {
             this.$toast.error('Can not fetch auth user, please try again')
