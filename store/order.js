@@ -9,7 +9,7 @@ export const mutations = {
 export const actions = {
      async create_an_order({commit}, payload, app) {
          try {
-            let res = await fetch("http://localhost:8000/api/auth/order", {
+            let res = await fetch(`${this.$domain.name}/api/auth/order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

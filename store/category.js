@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
    async get_all_category({ commit }) {
        try {
-           const res = await this.$axios.$get('http://localhost:8000/api/all-category')
+           const res = await this.$axios.$get(`${this.$domain.name}/api/all-category`)
            commit('SET_ALL_CATEGORIES', res)
        } catch (error) {
            $nuxt.$emit('category-failed', 'Category fetching failed')   

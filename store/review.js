@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
     async make_review({commit}, payload) {
         try {
-            const res = await fetch("http://localhost:8000/api/review/make-review", {
+            const res = await fetch(`${this.$domain.name}/api/review/make-review`, {
             method: "POST",    
             credentials: "include",
             headers: { "Content-Type": "application/json" },
@@ -28,7 +28,7 @@ export const actions = {
 
     async get_product_rating({commit}, payload) {
         try {
-            const res = await fetch(`http://localhost:8000/api/review/get-review/${payload.product_id}`, {
+            const res = await fetch(`${this.$domain.name}/api/review/get-review/${payload.product_id}`, {
                 method: "GET",    
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },

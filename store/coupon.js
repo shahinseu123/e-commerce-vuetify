@@ -15,7 +15,7 @@ export const mutations = {
 export const actions = {
     async get_all_coupon({ commit }) {
         try {
-            const res = await this.$axios.$get('http://localhost:8000/api/coupon')
+            const res = await this.$axios.$get(`${this.$domain.name}/api/coupon`)
             commit('SET_ALL_COUPON', res)
         } catch (error) {
             $nuxt.$emit('brand-failed', 'Coupon fetching failed')   

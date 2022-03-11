@@ -23,7 +23,7 @@ export const mutations = {
 export const actions = {
    async get_all_product({ commit }){
        try {
-          const res = await this.$axios.$get('http://localhost:8000/api/all-product');
+          const res = await this.$axios.$get(`${this.$domain.name}/api/all-product`);
            commit('SET_ALL_PRODUCTS', res)
        } catch (error) {  
            $nuxt.$emit('product-failed', 'Product fetching failed')        
@@ -32,7 +32,7 @@ export const actions = {
    },
    async get_sorted_product({ commit }){
        try {
-          const res = await this.$axios.$get('http://localhost:8000/api/sorted-product');
+          const res = await this.$axios.$get(`${this.$domain.name}/api/sorted-product`);
            commit('SET_SORTED_PRODUCTS', res)
           
        } catch (error) {
@@ -42,19 +42,17 @@ export const actions = {
    },
    async count_view({commit}, payload) {
        try {
-         const res = await this.$axios.$get('http://localhost:8000/api/product/count_product/'+payload.productName);
+         const res = await this.$axios.$get(`${this.$domain.name}/api/product/count_product/payload.productName`);
        } catch (error) {
          $nuxt.$emit('product-failed', 'Product count failed')   
        }
    },
    async getTopViewProduct({commit}) {
        try {
-          const res = await this.$axios.$get('http://localhost:8000/api/product/top-viewed')
+          const res = await this.$axios.$get(`${this.$domain.name}/api/product/top-viewed`)
           commit('SET_TOP_VIEWED_PRODUCT', res)
        } catch (error) {
           $nuxt.$emit('product-failed', 'Top viewed product fething failed')  
        }
    }
-
-   
 };

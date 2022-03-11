@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
     async get_auth_user({ commit }) {
         try {
-            const res =  await this.$axios.$get("http://localhost:8000/api/auth/user", {withCredentials: true});
+            const res =  await this.$axios.$get(`${this.$domain.name}/api/auth/user`, {withCredentials: true});
             commit('SET_AUTH_USER', res)
             if (res) {      
                     $nuxt.$emit('set-auth')
@@ -24,7 +24,7 @@ export const actions = {
 
     async upadte_user({commit}, payload) {
         try {
-            const res = await fetch("http://localhost:8000/api/auth/user/update-info", {
+            const res = await fetch(`${this.$domain.name}/api/auth/user/update-info`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -41,7 +41,7 @@ export const actions = {
     },
     async upadte_password({commit}, payload) {
         try {
-            const res = await fetch("http://localhost:8000/api/auth/user/update-password", {
+            const res = await fetch(`${this.$domain.name}/api/auth/user/update-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -59,7 +59,7 @@ export const actions = {
 
     async send_code({commit}, payload) {
         try {
-            const res = await fetch(`http://localhost:8000/api/auth/reset/sendcode`, {
+            const res = await fetch(`${this.$domain.name}/api/auth/reset/sendcode`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -77,7 +77,7 @@ export const actions = {
     },
     async confirm_code({commit}, payload) {
         try {
-            const res = await fetch(`http://localhost:8000/api/auth/reset/confirmcode`, {
+            const res = await fetch(`${this.$domain.name}/api/auth/reset/confirmcode`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -100,7 +100,7 @@ export const actions = {
     },
     async update_password({commit}, payload) {
         try {
-             const res = await fetch(`http://localhost:8000/api/auth/reset/set-new-pass`, {
+             const res = await fetch(`${this.$domain.name}/api/auth/reset/set-new-pass`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",

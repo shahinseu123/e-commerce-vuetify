@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
     async get_all_settings({ commit }) {
         try {
-            const res = await this.$axios.$get('http://localhost:8000/api/web-settings')
+            const res = await this.$axios.$get(`${this.$domain.name}/api/web-settings`)
             commit('SET_ALL_WEB_SET', res)
         } catch (error) {
             $nuxt.$emit('brand-failed', 'Web settings fetching failed')   

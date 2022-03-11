@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
     async create_wish({commit}, id) {
         try {
-            let res = await fetch("http://localhost:8000/api/auth/wish/make-wish/" + id, {
+            let res = await fetch(`${this.$domain.name}/api/auth/wish/make-wish/` + id, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -33,7 +33,7 @@ export const actions = {
 
     async get_wish({commit}) {
         try {
-            let res = await fetch("http://localhost:8000/api/auth/wish/make-wish/", {
+            let res = await fetch(`${this.$domain.name}/api/auth/wish/make-wish/`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
